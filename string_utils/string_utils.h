@@ -1,0 +1,145 @@
+#ifndef MPXE_H
+#define MPXE_H
+
+
+#include <cstdint>
+#include <string>
+#include <string_view>
+#include <vector>
+#include <algorithm>
+
+
+namespace mpxe::string::ascii
+{
+
+
+void to_upper(std::string& s)
+{
+  std::transform(std::begin(s), std::end(s), std::begin(s), ::toupper);
+}
+
+
+void to_lower(std::string& s)
+{
+  std::transform(std::begin(s), std::end(s), std::begin(s), ::tolower);
+}
+
+
+std::string as_upper(std::string_view sv)
+{
+  std::string s;
+  s.reserve(sv.size());
+  for (auto c : sv)
+    s += ::toupper(c);
+  return s;
+}
+
+
+std::string as_lower(std::string_view sv)
+{
+  std::string s;
+  s.reserve(sv.size());
+  for (auto c : sv)
+    s += ::tolower(c);
+  return s;
+}
+
+
+void trim(std::string& s)
+{
+  
+}
+
+
+std::string_view trimmed(std::string_view sv)
+{
+
+}
+
+
+}  // namespace mpxe::string::ascii
+
+
+namespace mpxe::string
+{
+
+
+bool starts_with(std::string_view sv, std::string_view token)
+{
+  if (sv.empty() || token.empty() || token.size() > sv.size())
+    return false;
+
+  auto a = std::begin(sv);
+  auto b = std::begin(token);
+  auto last = std::end(token);
+
+  if (*a != *b)
+    return false;
+
+  while (b != last && *(++a) == *(++b));
+
+  if (b == last)
+    return true;
+
+  return false;
+}
+
+
+std::vector<std::string_view> split_keep_empty(std::string_view sv, char token)
+{
+  std::size_t start = 0;
+  auto i = sv.find(token);
+  std::vector<std::string_view> parts;
+
+  while (i != sv.npos) {
+    parts.push_back(sv.substr(start, i - start));
+    start = i + 1;
+    i = sv.find(token, start);
+  }
+  parts.push_back(sv.substr(start));
+
+  return parts;
+}
+
+
+std::vector<std::string_view> split_ignore_empty(std::string_view sv, char token)
+{
+  std::size_t start = 0;
+  auto i = sv.find(token);
+  std::vector<std::string_view> parts;
+
+  while (i != sv.npos) {
+    if (auto len = i - start; len > 0)
+      parts.push_back(sv.substr(start, len));
+    start = i + 1;
+    i = sv.find(token, start);
+  }
+  if (sv.size() - start > 0)
+    parts.push_back(sv.substr(start));
+
+  return parts;
+}
+
+
+std::vector<std::string_view> split(std::string_view sv, char token, bool keep_empty_parts = true)
+{
+  if (keep_empty_parts)
+    return split_keep_empty(sv, token);
+  return split_ignore_empty(sv, token);
+}
+
+
+std::tuple<std::string_view, std::string_view> split_first(std::string_view sv, char token)
+{
+  if (auto i = sv.find(token); i != sv.npos) {
+    return {sv.substr(0, i), sv.substr(i+1)};
+  }
+
+  return {sv, {}};
+}
+
+
+}  // namespace mpxe::string
+
+
+#endif  // MPXE_H
