@@ -5,11 +5,13 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <locale>
 #include <vector>
 #include <algorithm>
 
 
-namespace mpxe::string::ascii
+// The following functions assume simple US ASCII (or at least single byte) encoding
+namespace mpxe::string::ascii  
 {
 
 
@@ -53,7 +55,32 @@ void trim(std::string& s)
 
 std::string_view trimmed(std::string_view sv)
 {
+  return sv;
+}
 
+
+// Splits <sv> each <character_count> characters, skipping <skip> characters after each split
+// E.g.: split(sv, 3)    : "abcdef123"   -> "abc", "def" and "123"
+//       split(sv, 3, 1) : "abc,def,123" -> "abc", "def" and "123"
+//
+// Substantially faster (scales linear with <character_count>) for constant width splitting
+// than using split(sv, ',') for "abc,def,123"
+//
+std::vector<std::string_view> split(std::string_view sv, std::size_t character_count,
+    std::size_t skip = 0)
+{
+  if (character_count == 0)
+    return {};
+
+  std::vector<std::string_view> v;
+  auto size = sv.size();
+  std::size_t i = 0;
+  while (i < size) {
+    v.push_back(sv.substr(i, character_count));
+    i += character_count + skip;
+  }
+
+  return v;
 }
 
 
@@ -64,14 +91,14 @@ namespace mpxe::string
 {
 
 
-bool starts_with(std::string_view sv, std::string_view token)
+bool starts_with(std::string_view sv, std::string_view test)
 {
-  if (sv.empty() || token.empty() || token.size() > sv.size())
+  if (sv.empty() || test.empty() || test.size() > sv.size())
     return false;
 
   auto a = std::begin(sv);
-  auto b = std::begin(token);
-  auto last = std::end(token);
+  auto b = std::begin(test);
+  auto last = std::end(test);
 
   if (*a != *b)
     return false;

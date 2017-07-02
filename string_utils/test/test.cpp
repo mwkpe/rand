@@ -3,7 +3,7 @@
 #include "doctest.h"
 
 
-TEST_CASE("ascii") {
+TEST_CASE("ascii case functions") {
   using namespace mpxe::string;
 
   SUBCASE("to_upper") {
@@ -34,6 +34,60 @@ TEST_CASE("ascii") {
   SUBCASE("as_lower") {
     CHECK(ascii::as_lower("abc_XYZ,-$") == "abc_xyz,-$");
     CHECK(ascii::as_lower("") == "");
+  }
+}
+
+
+TEST_CASE("ascii split") {
+  using namespace mpxe::string;
+
+  SUBCASE("1") {
+    auto v = ascii::split("abcdefghijklmnop", 3);
+
+    CHECK(v.size() == 6);
+    CHECK(v[0] == "abc");
+    CHECK(v[1] == "def");
+    CHECK(v[2] == "ghi");
+    CHECK(v[3] == "jkl");
+    CHECK(v[4] == "mno");
+    CHECK(v[5] == "p");
+  }
+
+  SUBCASE("2") {
+    auto v = ascii::split("abc,def,ghi,jkl,mno,p", 3, 1);
+
+    CHECK(v.size() == 6);
+    CHECK(v[0] == "abc");
+    CHECK(v[1] == "def");
+    CHECK(v[2] == "ghi");
+    CHECK(v[3] == "jkl");
+    CHECK(v[4] == "mno");
+    CHECK(v[5] == "p");
+  }
+
+  SUBCASE("3") {
+    auto v = ascii::split("abc,def,ghi,jkl,mno,p", 0);
+    CHECK(v.size() == 0);
+  }
+
+  SUBCASE("4") {
+    auto v = ascii::split("", 1);
+    CHECK(v.size() == 0);
+  }
+
+  SUBCASE("5") {
+    auto v = ascii::split("abc", 1, 1);
+
+    CHECK(v.size() == 2);
+    CHECK(v[0] == "a");
+    CHECK(v[1] == "c");
+  }
+
+  SUBCASE("6") {
+    auto v = ascii::split("abc", 1, 2);
+
+    CHECK(v.size() == 1);
+    CHECK(v[0] == "a");
   }
 }
 
@@ -190,4 +244,17 @@ TEST_CASE("split_ignore_empty") {
     CHECK(v[0] == ",alpha");
     CHECK(v[1] == "beta,1");
   }
+}
+
+
+TEST_CASE("ascii split and split cross check") {
+  using namespace mpxe::string;
+  const char* s = "123,456,789,3";
+  auto v1 = split(s, ',');
+  auto v2 = ascii::split(s, 3, 1);
+  CHECK(v1.size() == v2.size());
+  CHECK(v1[0] == v2[0]);
+  CHECK(v1[1] == v2[1]);
+  CHECK(v1[2] == v2[2]);
+  CHECK(v1[3] == v2[3]);
 }
