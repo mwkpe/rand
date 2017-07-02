@@ -10,7 +10,31 @@
 #include <algorithm>
 
 
-// The following functions assume simple US ASCII (or at least single byte) encoding
+// Implementation details
+//
+namespace mpxe::string::details
+{
+
+
+template<typename I> inline bool compare(I a, I b, I last)
+{
+  if (*a != *b)
+    return false;
+
+  while (b != last && *(++a) == *(++b));
+
+  if (b == last)
+    return true;
+
+  return false;
+}
+
+
+}  // namepsace mpxe::string::details
+
+
+// The following functions assume US ASCII (or single byte in some cases) encoding
+//
 namespace mpxe::string::ascii  
 {
 
@@ -95,20 +119,15 @@ bool starts_with(std::string_view sv, std::string_view test)
 {
   if (sv.empty() || test.empty() || test.size() > sv.size())
     return false;
+  return details::compare(std::begin(sv), std::begin(test), std::end(test));
+}
 
-  auto a = std::begin(sv);
-  auto b = std::begin(test);
-  auto last = std::end(test);
 
-  if (*a != *b)
+bool ends_with(std::string_view sv, std::string_view test)
+{
+  if (sv.empty() || test.empty() || test.size() > sv.size())
     return false;
-
-  while (b != last && *(++a) == *(++b));
-
-  if (b == last)
-    return true;
-
-  return false;
+  return details::compare(std::rbegin(sv), std::rbegin(test), std::rend(test));
 }
 
 

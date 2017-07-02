@@ -103,10 +103,28 @@ TEST_CASE("starts_with") {
 
   CHECK(starts_with("hello world", "world") == false);
   CHECK(starts_with("hello world", "") == false);
-  CHECK(starts_with("", "world") == false);
+  CHECK(starts_with("", "hello") == false);
   CHECK(starts_with("hello world", "hello world ") == false);
   CHECK(starts_with("", "") == false);
   CHECK(starts_with(u8"初音ミク", u8"音") == false);
+}
+
+
+TEST_CASE("ends_with") {
+  using namespace mpxe::string;
+
+  CHECK(ends_with("hello world", "world") == true);
+  CHECK(ends_with("hello world", "d") == true);
+  CHECK(ends_with("hello world", "o world") == true);
+  CHECK(ends_with("hello world", "hello world") == true);
+  CHECK(ends_with(u8"初音ミク", u8"ミク") == true);
+
+  CHECK(ends_with("hello world", "hello") == false);
+  CHECK(ends_with("hello world", "") == false);
+  CHECK(ends_with("", "world") == false);
+  CHECK(ends_with("hello world", " hello world") == false);
+  CHECK(ends_with("", "") == false);
+  CHECK(ends_with(u8"初音ミク", u8"音") == false);
 }
 
 
