@@ -5,6 +5,11 @@
 #include <random>
 
 
+// https://www.youtube.com/watch?v=nXaxk27zwlk#t=40m
+static void escape(void* p) { asm volatile("" : : "g"(p) : "memory"); }
+static void clobber() { asm volatile("" : : : "memory"); }
+
+
 class RandomFixture : public hayai::Fixture
 {
 public:
@@ -61,6 +66,17 @@ const char* csv_constw = "116112,117178,129932,138393,151968,155886,163385,16717
     "881416,898259,928830,958558,962443,994418,997562";
 
 
+BENCHMARK(string, starts_with, 100, 1000000)
+{
+  using namespace mpxe::string;
+  bool b;
+  escape(&b);
+  b = starts_with("If you have nothing in quantum mechanics, you will always have something.",
+      "If you have nothing in quantum mechanics");
+  clobber();
+}
+
+
 /*
 BENCHMARK(string, split, 100, 100000)
 {
@@ -75,6 +91,7 @@ BENCHMARK(string, split_for_each, 100, 100000)
 */
 
 
+/*
 BENCHMARK_F(RandomFixture, split_at_char, 100, 100000)
 {
   mpxe::string::split(s, ',');
@@ -85,6 +102,7 @@ BENCHMARK_F(RandomFixture, split_at_count, 100, 100000)
 {
   mpxe::string::ascii::split(s, 100, 1);
 }
+*/
 
 
 int main()
