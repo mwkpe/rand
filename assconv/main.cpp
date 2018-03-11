@@ -1,0 +1,116 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <string_view>
+#include <regex>
+#include <cmath>
+#include <experimental/filesystem>
+
+#include "cxxopts.hpp"
+#include "nlohmann/json.hpp"
+
+
+namespace fsys = std::experimental::filesystem;
+using json = nlohmann::json;
+
+
+namespace {
+
+
+std::string parse_args(int argc, char** argv)
+{
+  std::string filename;
+  try {
+    cxxopts::Options options{"assconv", "ASS to JSON converter"};
+    options.add_options()("f,file", "File", cxxopts::value<std::string>(filename));
+    auto result = options.parse(argc, argv);
+    if (result.count("file") == 0) {
+      throw std::runtime_error{"File must be specified, use the -f or --file"};
+    }
+    return filename;
+  }
+  catch (const cxxopts::OptionException& e) {
+    throw std::runtime_error{e.what()};
+  }
+}
+
+
+std::vector<std::string> split(std::string_view sv, char token)
+{
+  std::size_t start = 0;
+  auto i = sv.find(token);
+  std::vector<std::string> parts;
+
+  while (i != sv.npos) {
+    parts.emplace_back(sv.substr(start, i - start));
+    start = i + 1;
+    i = sv.find(token, start);
+  }
+  parts.emplace_back(sv.substr(start));
+
+  return parts;
+}
+
+
+json build_json(std::vector<std::string>&& parts)
+{
+  json j;
+  j["japanese"] = "";
+  j["hiragana"] = "";
+  j["romaji"] = "";
+  j["english"] = "";
+  switch (parts.size()) {
+    case 4: j["english"] = std::move(parts[3]);
+    [[fallthrough]];
+    case 3: j["romaji"] = std::move(parts[2]);
+    [[fallthrough]];
+    case 2: j["hiragana"] = std::move(parts[1]);
+    [[fallthrough]];
+    case 1: j["japanese"] = std::move(parts[0]);
+  }
+  return j;
+}
+
+
+}  // namespace
+
+
+int main(int argc, char** argv)
+{
+  std::string filename;
+  try {
+    filename = parse_args(argc, argv);
+  }
+  catch (const std::runtime_error& e) {
+    std::cerr << e.what() << std::endl;
+    return 0;
+  }
+
+  if (std::ifstream ass_file{filename}; ass_file.is_open()) {
+    std::string line;
+    // Dialogue: 0,0:00:01.31,0:00:01.68,Default,,0,0,0,,話;はなし;hanashi;story
+    std::regex rx{R"(^\s*Dialogue:\s+\d+,(\d+):(\d+):(\d+).(\d+),.+,(.+)$)"};
+    std::smatch m;
+    json transcript;
+    while (getline(ass_file, line)) {
+      if (std::regex_match(line, m, rx)) {
+        int hours = std::stoi(m[1]);
+        int minutes = std::stoi(m[2]);
+        int seconds = std::stoi(m[3]);
+        int milliseconds = std::stoi(m[4]);
+        auto j = build_json(split(m[5].str(), ';'));
+        j["timecode"] = milliseconds * 10 + seconds * 1000 +
+            minutes * 60 * 1000 + hours * 60 * 60 * 1000 + 200;  // 200 ms lead-in
+        transcript.push_back(j);
+      }
+    }
+
+    filename = fsys::path{filename}.stem().string() + ".json";
+    if (std::ofstream fs{filename, std::ios::binary}; fs.is_open()) {
+      fs << transcript.dump(2);
+    }
+  }
+
+  return 0;
+}
