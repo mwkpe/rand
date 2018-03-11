@@ -154,6 +154,12 @@ int main(int argc, char** argv)
     if (std::ofstream fs{filename, std::ios::binary}; fs.is_open()) {
       fs << transcript.dump(2);
     }
+    else {
+      std::cerr << "Could not open file: " << filename << std::endl;
+    }
+  }
+  else {
+    std::cerr << "Could not open file: " << filename << std::endl;
   }
 
   return 0;
