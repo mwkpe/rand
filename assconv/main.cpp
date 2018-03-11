@@ -30,12 +30,12 @@ std::tuple<std::string, int, float> parse_args(int argc, char** argv)
   try {
     cxxopts::Options options{"assconv", "ASS to JSON converter"};
     options.add_options()
-        ("f,file", "input file", cxxopts::value<std::string>(filename))
+        ("i,input", "input file", cxxopts::value<std::string>(filename))
         ("o,offset", "time offset in milliseconds", cxxopts::value<int>(offset)->default_value("0"))
-        ("r,framerate", "framerate", cxxopts::value<float>(framerate)->default_value("23.975"))
+        ("f,framerate", "framerate", cxxopts::value<float>(framerate)->default_value("23.975"))
         ;
     auto result = options.parse(argc, argv);
-    if (result.count("file") == 0) {
+    if (result.count("input") == 0) {
       throw std::runtime_error{"File must be specified, use the -f or --file"};
     }
     return {filename, offset, framerate};
@@ -96,7 +96,7 @@ std::tuple<int, int, int, int> as_clocktime(int milliseconds)
   int minutes = milliseconds / (1000 * 60) % 60;
   int seconds = milliseconds / 1000 % 60;
   milliseconds = milliseconds % 1000;
-  return {hours, seconds, minutes, milliseconds};
+  return {hours, minutes, seconds, milliseconds};
 }
 
 
