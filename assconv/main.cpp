@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <tuple>
 #include <vector>
 #include <string>
 #include <string_view>
@@ -8,27 +9,36 @@
 #include <experimental/filesystem>
 
 #include "cxxopts.hpp"
+#define FMT_HEADER_ONLY
+#include <fmt/format.h>
 #include "nlohmann/json.hpp"
 
 
 namespace fsys = std::experimental::filesystem;
+using namespace fmt::literals;
 using json = nlohmann::json;
 
 
 namespace {
 
 
-std::string parse_args(int argc, char** argv)
+std::tuple<std::string, int, float> parse_args(int argc, char** argv)
 {
   std::string filename;
+  int offset;
+  float framerate;
   try {
     cxxopts::Options options{"assconv", "ASS to JSON converter"};
-    options.add_options()("f,file", "File", cxxopts::value<std::string>(filename));
+    options.add_options()
+        ("f,file", "input file", cxxopts::value<std::string>(filename))
+        ("o,offset", "time offset in milliseconds", cxxopts::value<int>(offset)->default_value("0"))
+        ("r,framerate", "framerate", cxxopts::value<float>(framerate)->default_value("23.975"))
+        ;
     auto result = options.parse(argc, argv);
     if (result.count("file") == 0) {
       throw std::runtime_error{"File must be specified, use the -f or --file"};
     }
-    return filename;
+    return {filename, offset, framerate};
   }
   catch (const cxxopts::OptionException& e) {
     throw std::runtime_error{e.what()};
@@ -73,14 +83,46 @@ json build_json(std::vector<std::string>&& parts)
 }
 
 
+std::uint64_t as_milliseconds(int hours, int minutes, int seconds, int milliseconds)
+{
+  return static_cast<std::uint64_t>(milliseconds) + seconds * 1000 +
+      minutes * 60 * 1000 + hours * 60 * 60 * 1000;
+}
+
+
+std::tuple<int, int, int, int> as_clocktime(int milliseconds)
+{
+  int hours = milliseconds / (1000 * 60 * 60) % 24;
+  int minutes = milliseconds / (1000 * 60) % 60;
+  int seconds = milliseconds / 1000 % 60;
+  milliseconds = milliseconds % 1000;
+  return {hours, seconds, minutes, milliseconds};
+}
+
+
+std::string as_frametime(int hours, int minutes, int seconds, int milliseconds, int offset, float framerate)
+{
+  if (offset != 0) {
+    auto ms = as_milliseconds(hours, minutes, seconds, milliseconds) + offset;
+    std::tie(hours, minutes, seconds, milliseconds) = as_clocktime(ms);
+  }
+  
+  // Round to closest frame
+  auto frame = static_cast<int>(std::round(milliseconds * 0.001f * framerate));
+  return "{:02}:{:02}:{:02}:{:02}"_format(hours, minutes, seconds, frame);
+}
+
+
 }  // namespace
 
 
 int main(int argc, char** argv)
 {
   std::string filename;
+  int offset;
+  float framerate;
   try {
-    filename = parse_args(argc, argv);
+    std::tie(filename, offset, framerate) = parse_args(argc, argv);
   }
   catch (const std::runtime_error& e) {
     std::cerr << e.what() << std::endl;
@@ -100,8 +142,8 @@ int main(int argc, char** argv)
         int seconds = std::stoi(m[3]);
         int milliseconds = std::stoi(m[4]);
         auto j = build_json(split(m[5].str(), ';'));
-        j["timecode"] = milliseconds * 10 + seconds * 1000 +
-            minutes * 60 * 1000 + hours * 60 * 60 * 1000 + 200;  // 200 ms lead-in
+        j["timestamp"] = as_milliseconds(hours, minutes, seconds, milliseconds * 10) + offset;
+        j["timecode"] = as_frametime(hours, minutes, seconds, milliseconds * 10, offset, framerate);
         transcript.push_back(j);
       }
     }
