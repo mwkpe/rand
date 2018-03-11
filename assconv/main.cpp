@@ -1,3 +1,7 @@
+/* A command line program for for converting ASS script dialogue lines to a custom JSON format
+ */
+
+
 #include <cstdint>
 #include <tuple>
 #include <vector>
