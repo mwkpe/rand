@@ -64,26 +64,6 @@ std::vector<std::string> split(std::string_view sv, char token)
 }
 
 
-json build_json(std::vector<std::string>&& parts)
-{
-  json j;
-  j["japanese"] = "";
-  j["hiragana"] = "";
-  j["romaji"] = "";
-  j["english"] = "";
-  switch (parts.size()) {
-    case 4: j["english"] = std::move(parts[3]);
-    [[fallthrough]];
-    case 3: j["romaji"] = std::move(parts[2]);
-    [[fallthrough]];
-    case 2: j["hiragana"] = std::move(parts[1]);
-    [[fallthrough]];
-    case 1: j["japanese"] = std::move(parts[0]);
-  }
-  return j;
-}
-
-
 std::uint64_t as_milliseconds(int hours, int minutes, int seconds, int milliseconds)
 {
   return static_cast<std::uint64_t>(milliseconds) + seconds * 1000 +
@@ -111,6 +91,29 @@ std::string as_frametime(int hours, int minutes, int seconds, int milliseconds, 
   // Round to closest frame
   auto frame = static_cast<int>(std::round(milliseconds * 0.001f * framerate));
   return "{:02}:{:02}:{:02}:{:02}"_format(hours, minutes, seconds, frame);
+}
+
+
+json build_json(std::vector<std::string>&& parts, int hours, int minutes, int seconds,
+    int milliseconds, int offset, float framerate)
+{
+  json j;
+  j["japanese"] = "";
+  j["hiragana"] = "";
+  j["romaji"] = "";
+  j["english"] = "";
+  switch (parts.size()) {
+    case 4: j["english"] = std::move(parts[3]);
+    [[fallthrough]];
+    case 3: j["romaji"] = std::move(parts[2]);
+    [[fallthrough]];
+    case 2: j["hiragana"] = std::move(parts[1]);
+    [[fallthrough]];
+    case 1: j["japanese"] = std::move(parts[0]);
+  }
+  j["timestamp"] = as_milliseconds(hours, minutes, seconds, milliseconds) + offset;
+  j["timecode"] = as_frametime(hours, minutes, seconds, milliseconds, offset, framerate);
+  return j;
 }
 
 
@@ -142,10 +145,8 @@ int main(int argc, char** argv)
         int minutes = std::stoi(m[2]);
         int seconds = std::stoi(m[3]);
         int milliseconds = std::stoi(m[4]);
-        auto j = build_json(split(m[5].str(), ';'));
-        j["timestamp"] = as_milliseconds(hours, minutes, seconds, milliseconds * 10) + offset;
-        j["timecode"] = as_frametime(hours, minutes, seconds, milliseconds * 10, offset, framerate);
-        transcript.push_back(j);
+        transcript.push_back(build_json(split(m[5].str(), ';'), hours, minutes, seconds,
+            milliseconds * 10, offset, framerate));
       }
     }
 
