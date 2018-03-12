@@ -45,7 +45,7 @@ if (receiver.wait_for_data()) {
 ```
 
 ## 2.3 Functions
-* Function names should be written using only lower case characters and underscores to separate words.
+Function names should be written using only lower case characters, numbers and underscores to separate words.
 ```
 void send_message();  // Correct
 void sendmessage();  // Wrong
@@ -190,7 +190,7 @@ int apples;  // Number of bananas
 ```
 
 ## 3.7 Whitespace
-* Don't paint "pretty" pictures with whitespace.
+Don't paint "pretty" pictures with whitespace.
 ```
 // Wrong
 int i         = 0;
