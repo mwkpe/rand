@@ -53,7 +53,7 @@ void sendMessage();  // Wrong
 ```
 
 ## 2.4 Types
-* User defined types should start with a single capital letter followed by lower case characters and underscores to separate words.
+User defined types should start with a single capital letter followed by only lower case characters, numbers and underscores to separate words (Stroustrup style).
 ```
 class Fusion_object;  // Correct
 {
