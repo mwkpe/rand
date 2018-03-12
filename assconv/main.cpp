@@ -94,6 +94,9 @@ std::string as_frametime(int hours, int minutes, int seconds, int milliseconds, 
   
   // Round to closest frame
   auto frame = static_cast<int>(std::round(milliseconds * 0.001f * framerate));
+  // Prevent overshoot due to rounding
+  if (auto fps = static_cast<int>(std::ceil(framerate)); frame >= fps)
+    frame = fps - 1;
   return "{:02}:{:02}:{:02}:{:02}"_format(hours, minutes, seconds, frame);
 }
 
