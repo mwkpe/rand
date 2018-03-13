@@ -166,16 +166,25 @@ if( i < 10 )
   ...
 }
 ```
-* Keep expressions within C-style for loops compact, e.g. `i=0`, `i<10`.
+* Indent switch cases and contents within cases
+* Use braces when creating local variables not needed in subsequent cases
+* Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute
 ```C++
 // Yes
-for (int i=0; i<10; ++i) {
-  ...
-}
-
-// No
-for (int i = 0; i < 10; ++i) {
-  ...
+switch (condition) {
+  case 0:
+      parse_signal(std::string_view s);
+    break;
+  case 1: {
+    int a = 10;
+  } break;
+  case 2:
+    // Fallthrough or...
+    [[fallthrough]];  // Starting with C++17
+  case 3:
+    break;
+  default:
+    break;
 }
 ```
 
