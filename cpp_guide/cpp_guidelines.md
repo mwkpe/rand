@@ -1,4 +1,3 @@
-<p align="center"><img src="dackel.png" alt="dachshund" width="250"></p>
 <h1>C++ Programming and Style Guidelines</h1>
 
 # 1. References
@@ -9,7 +8,7 @@ These guidelines are loosely based on the [C++ Core Guidelines](https://github.c
 * Don't use `camelCase` or `PascalCase`. Use `snake_case` as done in Standard C++ and the Standard Library.
 * Don't add type information to names, e.g. Hungarian notation `f_velocity`. [<sub><sup>*(NL.5)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl5-avoid-encoding-type-information-in-names)
 * Don't use a leading underscore `_abc` or double underscores `ab__c`. These are generally reserved for library implementers or compiler vendors. <sub><sup>*(N4659 5.10.3)*</sup></sub>
-* Avoid using unnecessarily or excessively long names
+* Avoid using unnecessarily or excessively long names.
 ```C++
 int remaining_free_slots_in_symbol_table;  // Please no
 int free_table_slots;  // Better
@@ -25,16 +24,16 @@ int ReCe1ved_ByT3s;  // You're fired!
 string html_header;  // This also applies to acronyms
 string HTML_header;  // No
 ```
-* Variable names should clearly reflect the content of the variable
-* Don't remove vowels or needlessly shorten words, e.g. `rcvd_bytes`
-* Class member variables should be suffixed with an underscore
+* Variable names should clearly reflect the content of the variable.
+* Don't remove vowels or needlessly shorten words, e.g. `rcvd_bytes`.
+* Class member variables should be suffixed with an underscore.
 ```C++
 class Vehicle
 {
   ...
   float velocity_;
   float heading_;
-}
+};
 ```
 * The length of a name should be roughly proportional to the size of its scope, i.e. use `n` instead of `received_bytes` for short-lived stack variables, especially if content can be inferred by context. [<sub><sup>*(NL.7)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl7-make-the-length-of-a-name-roughly-proportional-to-the-length-of-its-scope)
 ```C++
@@ -87,10 +86,23 @@ class file_error : public std::runtime_error  // No
 class File_error : public std::runtime_error  // Yes
 ```
 
+## 2.7 Files
+* Header files should use `.h` and source files `.cpp`.
+* File names should be written only using lower case characters, numbers and underscores to separate words.
+* Files definining types should have the same name as the type.
+
+Example `fusion_object.h`
+```C++
+class Fusion_object
+{
+  ...
+};
+```
+
 # 3. Style conventions
 ## 3.1 Indentation
-* Tabs should be automatically replaced with spaces
-* One tab should be two spaces wide
+* Tabs should be automatically replaced with spaces.
+* One tab should be two spaces wide.
 ```C++
 // Yes
 if (x < 0) {
@@ -144,7 +156,7 @@ public:
 
 private:
   float velocity_;
-}
+};
 ```
 
 ## 3.5 Conditionals
@@ -167,7 +179,7 @@ if( i < 10 )
   ...
 }
 ```
-* Indent switch cases and contents within cases.
+* Switch cases and contents within cases should be indented.
 * Use braces when creating local variables not needed in subsequent cases.
 * Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute.
 ```C++
@@ -189,14 +201,36 @@ switch (condition) {
 }
 ```
 
-## 3.6 Comments
+## 3.6 Const notation
+* The const qualifier should be put before the type. [<sub><sup>*(NL.26)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl26-use-conventional-const-notation)
+
+```C++
+const int i = 3;  // Yes
+int const i = 3;  // No
+```
+
+## 3.7 Getter & setter
+* Getter should not be prefixed and setter should be prefixed with `set_`.
+```C++
+class Vehicle
+{
+public:
+  float velocity() const { return velocity_; };
+  void set_velocity(float v) { velocity_ = v; };
+
+private:
+  float velocity_;
+}
+```
+
+## 3.8 Comments
 * Don't use C-style comments. `/* Comment */`
 * Comments following code should be separated by 2 spaces.
 ```C++
 int apples;  // Number of bananas
 ```
 
-## 3.7 Whitespace
+## 3.9 Whitespace
 * Don't paint "pretty" pictures with whitespace.
 ```C++
 // No
@@ -223,7 +257,7 @@ auto time = to_timestamp(hours, minutes, seconds, milliseconds,
     to_microseconds(microseconds, nanoseconds, picoseconds));
 ```
 * Exception: Vector and matrix initialization
-```
+```C++
 Matrix3f m;
 m << 1,  2,  3,
      4,  5,  6,
@@ -231,4 +265,90 @@ m << 1,  2,  3,
 ```
 
 # 4. Programming conventions
-TBD
+## 4.1 Header includes
+* Explicitly include all headers you use.
+* Prefer including headers in the source file instead of the header file.
+* Prefer forward declaration whenever possible.
+* Always include the C++ version, e.g. include `<cmath>` and not `<math.h>`
+* Include in the following order:
+    1. Current source file's header
+    2. C libraries
+    3. C++ Standard libraries
+    4. C++ libraries
+    5. Project header files
+
+Example `vehicle.cpp`
+```C++
+#include "vehicle.h"
+
+#include <stdio.h>
+#extern "C" {
+  #include "non-std-c-header.h"
+}
+
+#include <tuple>
+#include <vector>
+
+#include <fmt/format.h>
+#include "pugixml.hpp"
+
+#include "header_from_your_project.h"
+```
+
+## 4.2 Include guards
+* Add include guards to each header file.
+* The name must be the same as the file name and be written using only capital letters.
+```C++
+#ifndef CAN_SOCKET_H
+#define CAN_SOCKET_H
+   ...
+#endif  // CAN_SOCKET_H
+```
+
+##  4.3 Preprocessor directives
+* Avoid macro definitions and prefer proper C++ constants and constexpr expressions whenever possible.
+```C++
+#define PI 3.14159  // No
+const float PI = 3.14159f;  // Yes
+```
+* Always write macros using only capital letters and numbers.
+
+## 4.4 Namespaces
+* Never import a namespace in a header file or at global scope.
+* Always explicitly qualifiy the std namespace, e.g. `std::vector`. This applies to all types and functions included from C++ headers, e.g. `std::memcpy`, `std::abs` or `std::uint64_t`.
+* Prefer declaring namespaces aliases in source files.
+```C++
+using namespace std;  // No, never
+using namespace asio::ip::udp;  // Allowed at function level
+namespace fsys = std::experimental::filesystem;  // Allowed in source files
+```
+* Put related classes into a common namespace.
+
+## 4.6 Const correctness
+* Pointers and references should be const whenever possible.
+* Always mark a member function `const` when it doesn't modify any member variables.
+```C++
+class Vehicle
+{
+public:
+  float velocity() const { return velocity_; };
+
+private:
+  float velocity_;
+}
+```
+
+## 4.5 Fixed-width integers
+* Use the integer types defined in `<cstdint>` when a fixed-width integer is necessary.
+```C++
+std::uint8_t crc;  // Yes
+uint8_t crc;  // No
+unsigned char crc;  // No
+```
+
+## 4.6 Casting
+Don't use C-style casts.
+```C++
+auto x = (int)x_position;  // No
+auto x = static_cast<int>(x_position);  // Yes
+```
