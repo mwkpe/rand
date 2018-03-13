@@ -271,11 +271,11 @@ m << 1,  2,  3,
 * Prefer forward declaration whenever possible.
 * Always include the C++ version, e.g. include `<cmath>` and not `<math.h>`
 * Include in the following order:
-    1. Current source file's header
-    2. C libraries
-    3. C++ Standard libraries
-    4. C++ libraries
-    5. Project header files
+  1. Current source file's header
+  2. C libraries
+  3. C++ Standard libraries
+  4. C++ libraries
+  5. Project header files
 
 Example `vehicle.cpp`
 ```C++
@@ -324,7 +324,7 @@ namespace fsys = std::experimental::filesystem;  // Allowed in source files
 ```
 * Put related classes into a common namespace.
 
-## 4.6 Const correctness
+## 4.5 Const correctness
 * Pointers and references should be const whenever possible.
 * Always mark a member function `const` when it doesn't modify any member variables.
 ```C++
@@ -338,17 +338,10 @@ private:
 }
 ```
 
-## 4.5 Fixed-width integers
+## 4.6 Fixed-width integers
 * Use the integer types defined in `<cstdint>` when a fixed-width integer is necessary.
 ```C++
 std::uint8_t crc;  // Yes
 uint8_t crc;  // No
 unsigned char crc;  // No
-```
-
-## 4.6 Casting
-Don't use C-style casts.
-```C++
-auto x = (int)x_position;  // No
-auto x = static_cast<int>(x_position);  // Yes
 ```
