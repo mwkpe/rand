@@ -6,28 +6,28 @@ These guidelines are loosely based on the [C++ Core Guidelines](https://github.c
 # 2. Naming conventions
 ## 2.1 General
 * Don't use `camelCase` or `PascalCase`. Use `snake_case` as done in Standard C++ and the Standard Library.
-* Don't add type information to names, e.g. Hungarian notation `f_velocity`. [<small>*(NL.5)*</small>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl5-avoid-encoding-type-information-in-names)
-* Don't use a leading underscore `_abc` or double underscores `ab__c`. These are generally reserved for library implementers or compiler vendors. <small>*(N4659 5.10.3)*</small>
+* Don't add type information to names, e.g. Hungarian notation `f_velocity`. [<sub><sup>*(NL.5)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl5-avoid-encoding-type-information-in-names)
+* Don't use a leading underscore `_abc` or double underscores `ab__c`. These are generally reserved for library implementers or compiler vendors. <sub><sup>*(N4659 5.10.3)*</sup></sub>
 * Avoid using unnecessarily or excessively long names.
-```
+```C++
 int remaining_free_slots_in_symbol_table;  // Please no
 int free_table_slots;  // Better
 ```
 
 ## 2.2 Variables
 * Variable names should be written using only lower case characters, numbers and underscores to separate words.
-```
-int received_bytes;  // Correct
-int receivedBytes;  // Wrong
+```C++
+int received_bytes;  // Yes
+int receivedBytes;  // No
 int ReCe1ved_ByT3s;  // You're fired!
 
 string html_header;  // This also applies to acronyms
-string HTML_header;  // Wrong
+string HTML_header;  // No
 ```
 * Variable names should clearly reflect the content of the variable.
 * Don't remove consonants or needlessly shorten words, e.g. `rcvd_bytes`.
 * Class member variables should be suffixed with an underscore.
-```
+```C++
 class Vehicle
 {
   ...
@@ -35,8 +35,8 @@ class Vehicle
   float heading_;
 }
 ```
-* The length of a name should be roughly proportional to the size of its scope, i.e. use `n` instead of `received_bytes` for short-lived stack variables, especially if content can be inferred by context. [<small>*(NL.7)*</small>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl7-make-the-length-of-a-name-roughly-proportional-to-the-length-of-its-scope)
-```
+* The length of a name should be roughly proportional to the size of its scope, i.e. use `n` instead of `received_bytes` for short-lived stack variables, especially if content can be inferred by context. [<sub><sup>*(NL.7)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl7-make-the-length-of-a-name-roughly-proportional-to-the-length-of-its-scope)
+```C++
 if (receiver.wait_for_data()) {
   int n = receiver.bytes_available();
   if (n > 512)
@@ -46,21 +46,21 @@ if (receiver.wait_for_data()) {
 
 ## 2.3 Functions
 Function names should be written using only lower case characters, numbers and underscores to separate words.
-```
-void send_message();  // Correct
-void sendmessage();  // Wrong
-void sendMessage();  // Wrong
+```C++
+void send_message();  // Yes
+void sendmessage();  // No
+void sendMessage();  // No
 ```
 
 ## 2.4 Types
 User defined types should start with a single capital letter followed by only lower case characters, numbers and underscores to separate words (Stroustrup style).
-```
-class Fusion_object;  // Correct
+```C++
+class Fusion_object;  // Yes
 {
   ...
 };
 
-class FusionObject;  // Wrong
+class FusionObject;  // No
 {
   ...
 };
@@ -69,33 +69,32 @@ class FusionObject;  // Wrong
 ## 2.5 Constants
 * Don't capitalize all constants `MAX_ITERATIONS`. Exceptions are preprocessor defines, global constants and plain `enum`.
 * Prefer using `enum class` since these don't leak names to the surrounding scope.
-```
-enum COLOR { RED, GREEN, BLUE };  // Bad
+```C++
+enum COLOR { RED, GREEN, BLUE };  // OK
 enum class Color { Red, Green, Blue };  // Better
 ```
 
 ## 2.6 Library usage
 The rules in this guide should be followed independent of the frameworks and libraries used, i.e. do not adapt, or partly adapt, to the conventions of a specific library. User code should be kept consistent.
-```
-class TreeModel : public QAbstractItemModel  // Wrong
-class Tree_model : public QAbstractItemModel  // Correct
+```C++
+class TreeModel : public QAbstractItemModel  // No
+class Tree_model : public QAbstractItemModel  // Yes
 
-class file_error : public std::runtime_error  // Wrong
-class File_error : public std::runtime_error  // Correct
+class file_error : public std::runtime_error  // No
+class File_error : public std::runtime_error  // Yes
 ```
 
 # 3. Style conventions
 ## 3.1 Indentation
-* Don't use tabs.
 * Tabs should be automatically replaced with spaces.
 * One tab should be two spaces wide.
-```
-// Correct
+```C++
+// Yes
 if (x < 0) {
   x = 0;
 }
 
-// Wrong
+// No
 if (x < 0) {
     x = 0;
 }
@@ -104,17 +103,17 @@ if (x < 0) {
 ## 3.2 Line length
 * Lines should be around 100 characters long and not exceed 120 characters.
 * Long lines should be continued on a new line with 4 spaces indentation with respect to the first line, i.e. any additional lines should not be indented further.
-```
-// Correct
+```C++
+// Yes
 auto time = to_timestamp(int hours, int minutes, int seconds, int milliseconds,
     int microseconds, int nanoseconds, int picoseconds);
 
-// Correct
+// Yes
 auto time = to_timestamp(int hours, int minutes, int seconds, int milliseconds,
     int microseconds, int nanoseconds, int picoseconds, int femtoseconds,
     int attoseconds, int zeptoseconds, int yoctoseconds);
 
-// Wrong
+// No
 auto time = to_timestamp(int hours, int minutes, int seconds, int milliseconds,
                          int microseconds, int nanoseconds, int picoseconds);  
 ```
@@ -122,8 +121,8 @@ auto time = to_timestamp(int hours, int minutes, int seconds, int milliseconds,
 ## 3.3 Functions
 * The opening brace should be put on a new line (Allman style).
 * Parameters should be separated by a single space after the comma.
-* Indent contents.
-```
+* Indent contents
+```C++
 void run(int mode, float delta_time)
 {
   int x;
@@ -133,8 +132,8 @@ void run(int mode, float delta_time)
 ## 3.4 Types
 * The opening brace should be put on a new line (Allman style).
 * Access specifiers should not be indented (Stroustrup style).
-* Indent contents.
-```
+* Indent contents
+```C++
 class Vehicle
 {
 public:
@@ -147,36 +146,31 @@ private:
 
 ## 3.5 Conditionals
 * The opening brace should be put at the end of the line (K&R style, Stroustrup variant).
-```
+* Put a space after the keyword and before the opening brace.
+* Don't put spaces after the opening bracket or before the closing bracket.
+* Indent contents
+```C++
+// Yes
 if (i < 10) {
   ...
 }
 else {
   ...
 }
-```
-* Put a space after the keyword and before the opening brace.
-* Don't put spaces after the opening bracket or before the closing bracket.
-* Indent contents.
-```
-// Wrong
-if ( i < 10 ) {
-  ...
-}
 
-// Wrong
-if(i < 10){
+// No
+if( i < 10 ){
   ...
 }
 ```
 * Keep expressions within C-style for loops compact, e.g. `i=0`, `i<10`.
-```
-// Correct
+```C++
+// Yes
 for (int i=0; i<10; ++i) {
   ...
 }
 
-// Wrong
+// No
 for (int i = 0; i < 10; ++i) {
   ...
 }
@@ -184,25 +178,25 @@ for (int i = 0; i < 10; ++i) {
 
 ## 3.6 Comments
 * Don't use C-style comments `/* Comment */`.
-* Comments should be separated by 2 spaces.
-```
+* Comments following code should be separated by 2 spaces.
+```C++
 int apples;  // Number of bananas
 ```
 
 ## 3.7 Whitespace
 Don't paint "pretty" pictures with whitespace.
-```
-// Wrong
+```C++
+// No
 int i         = 0;
 std::string s = "Maintaining pointless alignment isn't fun";
 double d      = 13.37;
 
-// Correct
+// Yes
 int i = 0;
 std::string s = "Each line is an individual, yay";
 double d = 13.37;
 
-// Wrong, don't build staircases
+// No, don't build staircases
 auto time = to_timestamp(hours,
                          minutes,
                          seconds,
@@ -211,7 +205,7 @@ auto time = to_timestamp(hours,
                                          nanoseconds,
                                          picoseconds));
 
-// Correct
+// Yes
 auto time = to_timestamp(hours, minutes, seconds, milliseconds,
     to_microseconds(microseconds, nanoseconds, picoseconds));
 ```
