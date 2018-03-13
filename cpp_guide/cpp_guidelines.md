@@ -1,7 +1,7 @@
 <h1>C++ Programming and Style Guidelines</h1>
 
 # 1. References
-These guidelines are loosely based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md), [Bjarne Stroustrup's C++ Style and Technique FAQ](http://www.stroustrup.com/bs_faq2.html) and the [PPP Style Guide](http://www.stroustrup.com/Programming/PPP-style.pdf) (PDF). These documents, especially the Core Guidelines, are recommended reading and should be considered for anything not specifically mentioned here.
+These guidelines are loosely based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md), [C++ FAQ](https://isocpp.org/wiki/faq/), [Bjarne Stroustrup's C++ Style and Technique FAQ](http://www.stroustrup.com/bs_faq2.html) and the [PPP Style Guide](http://www.stroustrup.com/Programming/PPP-style.pdf) (PDF). These documents are recommended reading and should be considered for anything not specifically mentioned here.
 
 # 2. Naming conventions
 ## 2.1 General
@@ -357,7 +357,7 @@ bool split(vector<string>& out, string_view in, char sep);  // No
 ```
 
 ## 4.8 Error handling
-* Exceptions should be used.
+* Exceptions should be used. [<sub><sup>*(C++ FAQ)*</sup></sub>](https://isocpp.org/wiki/faq/exceptions)
 * Exceptions should be derived from `std::runtime_error` or `std::logic_error`.
 ```C++
 class Parse_error : public std::runtime_error
