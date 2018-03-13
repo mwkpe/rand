@@ -348,8 +348,8 @@ unsigned char crc;  // No
 
 ## 4.7 Functions
 * Functions should serve a single purpose and should be kept below 30 lines. Extensive tasks should be divided into reasonable functions calls.
-* Inputs should be passed by constant references or pointers, or by value for primitive types.
-* Outputs should be returned (using tuple for multiple return values).
+* Inputs should be passed by constant references or pointers, or by value for primitive types. [<sub><sup>*(F.16)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f16-for-in-parameters-pass-cheaply-copied-types-by-value-and-others-by-reference-to-const)
+* Outputs should be returned (using tuple for multiple return values). [<sub><sup>*(F.20)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters)
 ```C++
 // std:: omitted for some clarity
 tuple<bool, vector<string>> split(string_view sv, char sep);  // Yes
