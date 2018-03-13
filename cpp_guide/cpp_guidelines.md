@@ -21,8 +21,8 @@ int received_bytes;  // Yes
 int receivedBytes;  // No
 int ReCe1ved_ByT3s;  // You're fired!
 
-string html_header;  // This also applies to acronyms
-string HTML_header;  // No
+std::string html_header;  // This also applies to acronyms
+std::string HTML_header;  // No
 ```
 * Variable names should clearly reflect the content of the variable.
 * Don't remove vowels or needlessly shorten words, e.g. `rcvd_bytes`.
@@ -220,11 +220,11 @@ public:
 
 private:
   float velocity_;
-}
+};
 ```
 
 ## 3.8 Comments
-* Don't use C-style comments. `/* Comment */`
+* Don't use C-style comments `/* Comment */`.
 * Comments following code should be separated by 2 spaces.
 ```C++
 int apples;  // Number of bananas
@@ -269,7 +269,7 @@ m << 1,  2,  3,
 * Explicitly include all headers you use.
 * Prefer including headers in the source file instead of the header file.
 * Prefer forward declaration whenever possible.
-* Always include the C++ version, e.g. include `<cmath>` and not `<math.h>`
+* Always include the C++ version, e.g. include `<cmath>` and not `<math.h>`.
 * Include headers in the following order:
 1. Current source file's header
 2. C libraries
@@ -277,7 +277,7 @@ m << 1,  2,  3,
 4. C++ libraries
 5. Project header files
 
-Example `vehicle.cpp`
+Example: `vehicle.cpp`
 ```C++
 #include "vehicle.h"
 
@@ -335,7 +335,7 @@ public:
 
 private:
   float velocity_;
-}
+};
 ```
 
 ## 4.6 Fixed-width integers
@@ -344,4 +344,26 @@ private:
 std::uint8_t crc;  // Yes
 uint8_t crc;  // No
 unsigned char crc;  // No
+```
+
+## 4.7 Functions
+* Functions should serve a single purpose and should be kept below 30 lines. Extensive tasks should be divided into reasonable functions calls.
+* Inputs should be passed by constant references or pointers, or by value for primitive types.
+* Outputs should be returned (using tuple for multiple return values).
+```C++
+// std:: omitted for some clarity
+tuple<bool, vector<string>> split(string_view sv, char sep);  // Yes
+bool split(vector<string>& out, string_view in, char sep);  // No
+```
+
+## 4.8 Error handling
+* Exceptions should be used.
+* Exceptions should be derived from `std::runtime_error` or `std::logic_error`.
+```C++
+class Parse_error : public std::runtime_error
+{
+public:
+  explicit Parse_error(const std::string& s) : std::runtime_error{s} {}
+  explicit Parse_error(const char* s) : std::runtime_error{s} {}
+};
 ```
