@@ -270,12 +270,12 @@ m << 1,  2,  3,
 * Prefer including headers in the source file instead of the header file.
 * Prefer forward declaration whenever possible.
 * Always include the C++ version, e.g. include `<cmath>` and not `<math.h>`
-* Include in the following order:
-  1. Current source file's header
-  2. C libraries
-  3. C++ Standard libraries
-  4. C++ libraries
-  5. Project header files
+* Include headers in the following order:
+1. Current source file's header
+2. C libraries
+3. C++ Standard libraries
+4. C++ libraries
+5. Project header files
 
 Example `vehicle.cpp`
 ```C++
@@ -306,7 +306,7 @@ Example `vehicle.cpp`
 ```
 
 ##  4.3 Preprocessor directives
-* Avoid macro definitions and prefer proper C++ constants and constexpr expressions whenever possible.
+* Avoid macro definitions and prefer proper C++ constants and constexpr whenever possible.
 ```C++
 #define PI 3.14159  // No
 const float PI = 3.14159f;  // Yes
