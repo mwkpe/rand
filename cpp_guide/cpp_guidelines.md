@@ -8,7 +8,7 @@ These guidelines are loosely based on the [C++ Core Guidelines](https://github.c
 * Don't use `camelCase` or `PascalCase`. Use `snake_case` as done in Standard C++ and the Standard Library.
 * Don't add type information to names, e.g. Hungarian notation `f_velocity`. [<sub><sup>*(NL.5)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl5-avoid-encoding-type-information-in-names)
 * Don't use a leading underscore `_abc` or double underscores `ab__c`. These are generally reserved for library implementers or compiler vendors. <sub><sup>*(N4659 5.10.3)*</sup></sub>
-* Avoid using unnecessarily or excessively long names.
+* Avoid using unnecessarily or excessively long names
 ```C++
 int remaining_free_slots_in_symbol_table;  // Please no
 int free_table_slots;  // Better
@@ -24,9 +24,9 @@ int ReCe1ved_ByT3s;  // You're fired!
 string html_header;  // This also applies to acronyms
 string HTML_header;  // No
 ```
-* Variable names should clearly reflect the content of the variable.
-* Don't remove vowels or needlessly shorten words, e.g. `rcvd_bytes`.
-* Class member variables should be suffixed with an underscore.
+* Variable names should clearly reflect the content of the variable
+* Don't remove vowels or needlessly shorten words, e.g. `rcvd_bytes`
+* Class member variables should be suffixed with an underscore
 ```C++
 class Vehicle
 {
@@ -88,8 +88,8 @@ class File_error : public std::runtime_error  // Yes
 
 # 3. Style conventions
 ## 3.1 Indentation
-* Tabs should be automatically replaced with spaces.
-* One tab should be two spaces wide.
+* Tabs should be automatically replaced with spaces
+* One tab should be two spaces wide
 ```C++
 // Yes
 if (x < 0) {
@@ -166,9 +166,9 @@ if( i < 10 )
   ...
 }
 ```
-* Indent switch cases and contents within cases
-* Use braces when creating local variables not needed in subsequent cases
-* Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute
+* Indent switch cases and contents within cases.
+* Use braces when creating local variables not needed in subsequent cases.
+* Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute.
 ```C++
 // Yes
 switch (condition) {
@@ -189,14 +189,14 @@ switch (condition) {
 ```
 
 ## 3.6 Comments
-* Don't use C-style comments `/* Comment */`.
+* Don't use C-style comments. `/* Comment */`
 * Comments following code should be separated by 2 spaces.
 ```C++
 int apples;  // Number of bananas
 ```
 
 ## 3.7 Whitespace
-Don't paint "pretty" pictures with whitespace.
+* Don't paint "pretty" pictures with whitespace.
 ```C++
 // No
 int i         = 0;
@@ -220,6 +220,13 @@ auto time = to_timestamp(hours,
 // Yes
 auto time = to_timestamp(hours, minutes, seconds, milliseconds,
     to_microseconds(microseconds, nanoseconds, picoseconds));
+```
+* Exception: Vector and matrix initialization
+```
+Matrix3f m;
+m << 1,  2,  3,
+     4,  5,  6,
+     9, 10, 11;
 ```
 
 # 4. Programming conventions
