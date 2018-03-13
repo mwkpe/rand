@@ -1,3 +1,4 @@
+<p align="center"><img src="dackel.png" alt="dachshund" width="250"></p>
 <h1>C++ Programming and Style Guidelines</h1>
 
 # 1. References
