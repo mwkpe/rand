@@ -25,7 +25,7 @@ string html_header;  // This also applies to acronyms
 string HTML_header;  // No
 ```
 * Variable names should clearly reflect the content of the variable.
-* Don't remove consonants or needlessly shorten words, e.g. `rcvd_bytes`.
+* Don't remove vowels or needlessly shorten words, e.g. `rcvd_bytes`.
 * Class member variables should be suffixed with an underscore.
 ```C++
 class Vehicle
@@ -55,19 +55,21 @@ void sendMessage();  // No
 ## 2.4 Types
 User defined types should start with a single capital letter followed by only lower case characters, numbers and underscores to separate words (Stroustrup style).
 ```C++
-class Fusion_object;  // Yes
+// Yes
+class Fusion_object;
 {
   ...
 };
 
-class FusionObject;  // No
+// No
+class FusionObject;
 {
   ...
 };
 ```
 
 ## 2.5 Constants
-* Don't capitalize all constants `MAX_ITERATIONS`. Exceptions are preprocessor defines, global constants and plain `enum`.
+* Don't capitalize all constants, e.g. `MAX_ITERATIONS`. Exceptions are preprocessor defines, global constants and plain `enum`.
 * Prefer using `enum class` since these don't leak names to the surrounding scope.
 ```C++
 enum COLOR { RED, GREEN, BLUE };  // OK
@@ -159,7 +161,8 @@ else {
 }
 
 // No
-if( i < 10 ){
+if( i < 10 )
+{
   ...
 }
 ```
@@ -210,5 +213,5 @@ auto time = to_timestamp(hours, minutes, seconds, milliseconds,
     to_microseconds(microseconds, nanoseconds, picoseconds));
 ```
 
-# 4. Programming
+# 4. Programming conventions
 TBD
