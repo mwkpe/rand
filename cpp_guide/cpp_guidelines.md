@@ -281,9 +281,9 @@ Example: `vehicle.cpp`
 ```C++
 #include "vehicle.h"
 
-#include <stdio.h>
+#include "openssl/ssl.h"
 #extern "C" {
-  #include "non-std-c-header.h"
+  #include "c-header-without-cpp-guard.h"
 }
 
 #include <tuple>
@@ -319,7 +319,7 @@ const float PI = 3.14159f;  // Yes
 * Prefer declaring namespaces aliases in source files.
 ```C++
 using namespace std;  // No, never
-using namespace asio::ip::udp;  // Allowed at function level
+using namespace asio::ip::udp;  // Allowed at function scope
 namespace fsys = std::experimental::filesystem;  // Allowed in source files
 ```
 * Put related classes into a common namespace.
