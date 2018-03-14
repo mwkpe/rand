@@ -5,7 +5,7 @@ These guidelines are loosely based on the [C++ Core Guidelines](https://github.c
 
 # 2. Naming conventions
 ## 2.1 General
-* Don't use `camelCase` or `PascalCase`. Use `snake_case` as done in Standard C++ and the Standard Library.
+* Don't use `camelCase` or `PascalCase`, use `snake_case` as done in Standard C++ and the Standard Library
 * Don't add type information to names, e.g. Hungarian notation `f_velocity` [<sub><sup>*(NL.5)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl5-avoid-encoding-type-information-in-names)
 * Don't use a leading underscore `_abc` or double underscores `ab__c`. These are generally reserved for library implementers or compiler vendors. <sub><sup>*(N4659 5.10.3)*</sup></sub>
 * Avoid using unnecessarily or excessively long names
@@ -35,7 +35,7 @@ class Vehicle
   float heading_;
 };
 ```
-* The length of a name should be roughly proportional to the size of its scope, i.e. use `n` instead of `received_bytes` for short-lived stack variables, especially if content can be inferred by context. [<sub><sup>*(NL.7)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl7-make-the-length-of-a-name-roughly-proportional-to-the-length-of-its-scope)
+* The length of a name should be roughly proportional to the size of its scope, i.e. use `n` instead of `received_bytes` for short-lived stack variables, especially if content can be inferred by context [<sub><sup>*(NL.7)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl7-make-the-length-of-a-name-roughly-proportional-to-the-length-of-its-scope)
 ```C++
 if (receiver.wait_for_data()) {
   int n = receiver.bytes_available();
