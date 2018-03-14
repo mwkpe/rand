@@ -45,7 +45,7 @@ if (receiver.wait_for_data()) {
 ```
 
 ## 2.3 Functions
-Function names should be written using only lower case characters, numbers and underscores to separate words.
+* Function names should be written using only lower case characters, numbers and underscores to separate words
 ```C++
 void send_message();  // Yes
 void sendmessage();  // No
@@ -53,7 +53,7 @@ void sendMessage();  // No
 ```
 
 ## 2.4 Types
-User defined types should start with a single capital letter followed by only lower case characters, numbers and underscores to separate words (Stroustrup style).
+* User defined types should start with a single capital letter followed by only lower case characters, numbers and underscores to separate words (Stroustrup style)
 ```C++
 // Yes
 class Fusion_object;
@@ -77,7 +77,7 @@ enum class Color { Red, Green, Blue };  // Better
 ```
 
 ## 2.6 Library usage
-The rules in this guide should be followed independent of the frameworks and libraries used, i.e. do not adapt, or partly adapt, to the conventions of a specific library. User code should be kept consistent.
+* The rules in this guide should be followed independent of the frameworks and libraries used, i.e. do not adapt, or partly adapt, to the conventions of a specific library
 ```C++
 class TreeModel : public QAbstractItemModel  // No
 class Tree_model : public QAbstractItemModel  // Yes
