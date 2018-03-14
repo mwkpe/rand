@@ -272,23 +272,18 @@ m << 1,  2,  3,
 * Always include the C++ version, e.g. include `<cmath>` and not `<math.h>`.
 * Include headers in the following order:
 1. Current source file's header
-2. C libraries
-3. C++ Standard libraries
-4. C++ libraries
-5. Project header files
+2. C++ Standard libraries
+3. C++ libraries
+4. Project header files
 
 Example: `vehicle.cpp`
 ```C++
 #include "vehicle.h"
 
-#include "openssl/ssl.h"
-#extern "C" {
-  #include "c-header-without-cpp-guard.h"
-}
-
 #include <tuple>
 #include <vector>
 
+#include "openssl/ssl.h"
 #include <fmt/format.h>
 #include "pugixml.hpp"
 
