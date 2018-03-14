@@ -6,16 +6,16 @@ These guidelines are loosely based on the [C++ Core Guidelines](https://github.c
 # 2. Naming conventions
 ## 2.1 General
 * Don't use `camelCase` or `PascalCase`. Use `snake_case` as done in Standard C++ and the Standard Library.
-* Don't add type information to names, e.g. Hungarian notation `f_velocity`. [<sub><sup>*(NL.5)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl5-avoid-encoding-type-information-in-names)
+* Don't add type information to names, e.g. Hungarian notation `f_velocity` [<sub><sup>*(NL.5)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl5-avoid-encoding-type-information-in-names)
 * Don't use a leading underscore `_abc` or double underscores `ab__c`. These are generally reserved for library implementers or compiler vendors. <sub><sup>*(N4659 5.10.3)*</sup></sub>
-* Avoid using unnecessarily or excessively long names.
+* Avoid using unnecessarily or excessively long names
 ```C++
 int remaining_free_slots_in_symbol_table;  // Please no
 int free_table_slots;  // Better
 ```
 
 ## 2.2 Variables
-* Variable names should be written using only lower case characters, numbers and underscores to separate words.
+* Variable names should be written using only lower case characters, numbers and underscores to separate words
 ```C++
 int received_bytes;  // Yes
 int receivedBytes;  // No
@@ -24,9 +24,9 @@ int ReCe1ved_ByT3s;  // You're fired!
 std::string html_header;  // This also applies to acronyms
 std::string HTML_header;  // No
 ```
-* Variable names should clearly reflect the content of the variable.
-* Don't remove vowels or needlessly shorten words, e.g. `rcvd_bytes`.
-* Class member variables should be suffixed with an underscore.
+* Variable names should clearly reflect the content of the variable
+* Don't remove vowels or needlessly shorten words, e.g. `rcvd_bytes`
+* Class member variables should be suffixed with an underscore
 ```C++
 class Vehicle
 {
@@ -69,8 +69,8 @@ class FusionObject;
 ```
 
 ## 2.5 Constants
-* Don't capitalize all constants, e.g. `MAX_ITERATIONS`. Exceptions are preprocessor defines, global constants and plain `enum`.
-* Prefer using `enum class` since these don't leak names to the surrounding scope.
+* Don't capitalize all constants, e.g. `MAX_ITERATIONS`, exceptions are preprocessor defines, global constants and plain `enum`
+* Prefer using `enum class` since these don't leak names to the surrounding scope
 ```C++
 enum COLOR { RED, GREEN, BLUE };  // OK
 enum class Color { Red, Green, Blue };  // Better
@@ -87,9 +87,9 @@ class File_error : public std::runtime_error  // Yes
 ```
 
 ## 2.7 Files
-* Header files should use `.h` and source files `.cpp`.
-* File names should be written only using lower case characters, numbers and underscores to separate words.
-* Files definining types should have the same name as the type.
+* Header files should use `.h` and source files `.cpp`
+* File names should be written only using lower case characters, numbers and underscores to separate words
+* Files definining types should have the same name as the type
 
 Example `fusion_object.h`
 ```C++
@@ -116,8 +116,8 @@ if (x < 0) {
 ```
 
 ## 3.2 Line length
-* Lines should be around 100 characters long and not exceed 120 characters.
-* Long lines should be continued on a new line with 4 spaces indentation with respect to the first line, i.e. any additional lines should not be indented further.
+* Lines should be around 100 characters long and not exceed 120 characters
+* Long lines should be continued on a new line with 4 spaces indentation with respect to the first line, i.e. any additional lines should not be indented further
 ```C++
 // Yes
 auto time = to_timestamp(int hours, int minutes, int seconds, int milliseconds,
@@ -134,9 +134,8 @@ auto time = to_timestamp(int hours, int minutes, int seconds, int milliseconds,
 ```
 
 ## 3.3 Functions
-* The opening brace should be put on a new line (Allman style).
-* Parameters should be separated by a single space after the comma.
-* Indent contents
+* The opening brace should be put on a new line (Allman style)
+* Parameters should be separated by a single space after the comma
 ```C++
 void run(int mode, float delta_time)
 {
@@ -145,9 +144,8 @@ void run(int mode, float delta_time)
 ```
 
 ## 3.4 Types
-* The opening brace should be put on a new line (Allman style).
-* Access specifiers should not be indented (Stroustrup style).
-* Indent contents
+* The opening brace should be put on a new line (Allman style)
+* Access specifiers should not be indented (Stroustrup style)
 ```C++
 class Vehicle
 {
@@ -160,10 +158,9 @@ private:
 ```
 
 ## 3.5 Conditionals
-* The opening brace should be put at the end of the line (K&R style, Stroustrup variant).
-* Put a space after the keyword and before the opening brace.
-* Don't put spaces after the opening bracket or before the closing bracket.
-* Indent contents
+* The opening brace should be put at the end of the line (K&R / Stroustrup style)
+* Put a space after the keyword and before the opening brace
+* Don't put spaces after the opening bracket or before the closing bracket
 ```C++
 // Yes
 if (i < 10) {
@@ -179,9 +176,9 @@ if( i < 10 )
   ...
 }
 ```
-* Switch cases and contents within cases should be indented.
-* Use braces when creating local variables not needed in subsequent cases.
-* Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute.
+* Switch cases and contents within cases should be indented
+* Use braces when creating local variables not needed in subsequent cases
+* Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute
 ```C++
 // Yes
 switch (condition) {
@@ -201,16 +198,27 @@ switch (condition) {
 }
 ```
 
-## 3.6 Const notation
-* The const qualifier should be put before the type. [<sub><sup>*(NL.26)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl26-use-conventional-const-notation)
+## 3.6 Exception handling
+* The opening brace should be put at the end of the line (K&R / Stroustrup style)
+```C++
+try {
+  ...
+}
+catch (const std::excetion& e) {
+  ...
+}
+```
+
+## 3.7 Const notation
+* The const qualifier should be put before the type [<sub><sup>*(NL.26)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl26-use-conventional-const-notation)
 
 ```C++
 const int i = 3;  // Yes
 int const i = 3;  // No
 ```
 
-## 3.7 Getter & setter
-* Getter should not be prefixed and setter should be prefixed with `set_`.
+## 3.8 Getter & setter
+* Getter should not be prefixed and setter should be prefixed with `set_`
 ```C++
 class Vehicle
 {
@@ -223,15 +231,15 @@ private:
 };
 ```
 
-## 3.8 Comments
-* Don't use C-style comments `/* Comment */`.
-* Comments following code should be separated by 2 spaces.
+## 3.9 Comments
+* Don't use C-style comments `/* Comment */`
+* Comments following code should be separated by 2 spaces
 ```C++
 int apples;  // Number of bananas
 ```
 
-## 3.9 Whitespace
-* Don't paint "pretty" pictures with whitespace.
+## 3.10 Whitespace
+* Don't paint "pretty" pictures with whitespace
 ```C++
 // No
 int i         = 0;
@@ -256,7 +264,7 @@ auto time = to_timestamp(hours,
 auto time = to_timestamp(hours, minutes, seconds, milliseconds,
     to_microseconds(microseconds, nanoseconds, picoseconds));
 ```
-* Exception: Vector and matrix initialization
+* Exception: vector and matrix initialization
 ```C++
 Matrix3f m;
 m << 1,  2,  3,
@@ -266,10 +274,10 @@ m << 1,  2,  3,
 
 # 4. Programming conventions
 ## 4.1 Header includes
-* Explicitly include all headers you use.
-* Prefer including headers in the source file instead of the header file.
-* Prefer forward declaration whenever possible.
-* Always include the C++ version, e.g. include `<cmath>` and not `<math.h>`.
+* Explicitly include all headers you use
+* Prefer including headers in the source file instead of the header file
+* Prefer forward declaration whenever possible
+* Always include the C++ version, e.g. include `<cmath>` and not `<math.h>`
 * Include headers in the following order:
 1. Current source file's header
 2. C++ Standard libraries
@@ -291,8 +299,8 @@ Example: `vehicle.cpp`
 ```
 
 ## 4.2 Include guards
-* Add include guards to each header file.
-* The name must be the same as the file name and be written using only capital letters.
+* Add include guards to each header file
+* The name must be the same as the file name and be written using only capital letters
 ```C++
 #ifndef CAN_SOCKET_H
 #define CAN_SOCKET_H
@@ -301,27 +309,27 @@ Example: `vehicle.cpp`
 ```
 
 ##  4.3 Preprocessor directives
-* Avoid macro definitions and prefer proper C++ constants and constexpr whenever possible.
+* Avoid macro definitions and prefer C++ constants and constexpr whenever possible
 ```C++
-#define PI 3.14159  // No
-const float PI = 3.14159f;  // Yes
+#define TAU 6.28318f;  // No
+const float TAU = 6.28318f;  // Yes
 ```
-* Always write macros using only capital letters and numbers.
+* Macros should be written using only capital letters, numbers and underscores
 
 ## 4.4 Namespaces
-* Never import a namespace in a header file or at global scope.
-* Always explicitly qualifiy the std namespace, e.g. `std::vector`. This applies to all types and functions included from C++ headers, e.g. `std::memcpy`, `std::abs` or `std::uint64_t`.
-* Prefer declaring namespaces aliases in source files.
+* Never import a namespace in a header file or at global scope
+* Always explicitly qualifiy the std namespace, e.g. `std::vector` (This applies to all types and functions included from C++ headers, e.g. `std::memcpy`, `std::abs` or `std::uint64_t`)
+* Prefer declaring namespaces aliases in source files
 ```C++
 using namespace std;  // No, never
 using namespace asio::ip::udp;  // Allowed at function scope
 namespace fsys = std::experimental::filesystem;  // Allowed in source files
 ```
-* Put related classes into a common namespace.
+* Put related classes into a common namespace
 
 ## 4.5 Const correctness
-* Pointers and references should be const whenever possible.
-* Always mark a member function `const` when it doesn't modify any member variables.
+* Pointers and references should be const whenever possible
+* Always mark a member function `const` when it doesn't modify any member variables
 ```C++
 class Vehicle
 {
@@ -334,17 +342,17 @@ private:
 ```
 
 ## 4.6 Fixed-width integers
-* Use the integer types defined in `<cstdint>` when a fixed-width integer is necessary.
+* Use the integer types defined in `<cstdint>` when a fixed-width integer is necessary
 ```C++
 std::uint8_t crc;  // Yes
-uint8_t crc;  // No
 unsigned char crc;  // No
 ```
 
 ## 4.7 Functions
-* Functions should serve a single purpose and should be kept below 30 lines. Extensive tasks should be divided into reasonable functions calls.
-* Inputs should be passed by constant references or pointers, or by value for primitive types. [<sub><sup>*(F.16)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f16-for-in-parameters-pass-cheaply-copied-types-by-value-and-others-by-reference-to-const)
-* Outputs should be returned (using tuple for multiple return values). [<sub><sup>*(F.20)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters)
+* Functions should serve a single purpose and should be kept below 30 lines
+* Tasks should be divided into reasonable smaller functions, e.g. a `render` function should call `render_vehicles`, `render_pedestrians`, etc. and not directly contain all the draw calls
+* Inputs should be passed by constant references or pointers, or by value for primitive types [<sub><sup>*(F.16)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f16-for-in-parameters-pass-cheaply-copied-types-by-value-and-others-by-reference-to-const)
+* Outputs should be returned (using tuple for multiple return values) [<sub><sup>*(F.20)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters)
 ```C++
 // std:: omitted for some clarity
 tuple<bool, vector<string>> split(string_view sv, char sep);  // Yes
@@ -352,8 +360,8 @@ bool split(vector<string>& out, string_view in, char sep);  // No
 ```
 
 ## 4.8 Error handling
-* Exceptions should be used. [<sub><sup>*(C++ FAQ)*</sup></sub>](https://isocpp.org/wiki/faq/exceptions)
-* Exceptions should be derived from `std::runtime_error` or `std::logic_error`.
+* Exceptions should be used [<sub><sup>*(C++ FAQ)*</sup></sub>](https://isocpp.org/wiki/faq/exceptions)
+* Exceptions should be derived from `std::runtime_error` or `std::logic_error`
 ```C++
 class Parse_error : public std::runtime_error
 {
