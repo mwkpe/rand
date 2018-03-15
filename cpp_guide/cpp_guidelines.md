@@ -209,15 +209,22 @@ catch (const std::excetion& e) {
 }
 ```
 
-## 3.7 Const notation
-* The const qualifier should be put before the type [<sub><sup>*(NL.26)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl26-use-conventional-const-notation)
+## 3.7 Pointer declaration
+* The * should be put close to the type
+```C++
+int* p;  // Yes
+int *p;  // No
+const int* const p;  // Yes
+```
 
+## 3.8 Const notation
+* The const qualifier should be put before the type [<sub><sup>*(NL.26)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl26-use-conventional-const-notation)
 ```C++
 const int i = 3;  // Yes
 int const i = 3;  // No
 ```
 
-## 3.8 Getter & setter
+## 3.9 Getter & setter
 * Getter should not be prefixed and setter should be prefixed with `set_`
 ```C++
 class Vehicle
@@ -231,14 +238,14 @@ private:
 };
 ```
 
-## 3.9 Comments
+## 3.10 Comments
 * Don't use C-style comments `/* Comment */`
 * Comments following code should be separated by 2 spaces
 ```C++
 int apples;  // Number of bananas
 ```
 
-## 3.10 Whitespace
+## 3.11 Whitespace
 * Don't paint "pretty" pictures with whitespace
 ```C++
 // No
