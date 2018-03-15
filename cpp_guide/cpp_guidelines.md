@@ -69,7 +69,7 @@ class FusionObject;
 ```
 
 ## 2.5 Constants
-* Don't capitalize all constants, e.g. `MAX_ITERATIONS`, exceptions are preprocessor defines, global constants and plain `enum`
+* Don't capitalize all constants, e.g. `MAX_ITERATIONS`, exceptions are preprocessor defines, global constants and plain enumerations
 * Prefer using `enum class` since these don't leak names to the surrounding scope
 ```C++
 enum COLOR { RED, GREEN, BLUE };  // OK
@@ -91,7 +91,7 @@ class File_error : public std::runtime_error  // Yes
 * File names should be written only using lower case characters, numbers and underscores to separate words
 * Files definining types should have the same name as the type
 
-Example `fusion_object.h`
+Example: `fusion_object.h`
 ```C++
 class Fusion_object
 {
