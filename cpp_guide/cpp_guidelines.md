@@ -177,7 +177,7 @@ if( i < 10 )
 }
 ```
 * Don't write Yoda contitions
-```
+```C++
 if (5 == i) {  // No
   ...
 }
@@ -198,6 +198,7 @@ switch (condition) {
     // Fallthrough or...
     [[fallthrough]];  // Starting with C++17
   case 3:
+    ...
     break;
   default:
     break;
@@ -361,7 +362,50 @@ std::uint8_t crc;  // Yes
 unsigned char crc;  // No
 ```
 
-## 4.7 Functions
+## 4.7 Structs
+* Only use structs for aggregates and POD types, i.e. don't do anything fancy with structs
+
+## 4.8 Classes
+* A class should follow the single responsibility principle
+* All resources acquired by a class must be released by the class's destructor [<sub><sup>*(C.31)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
+* A class with either a user-defined destructor, copy/move constructors or assignment operators must always define all five (rule of five)
+
+```C++
+class Vehicle
+{
+public:
+  ~Vehicle() { /* Resource cleanup */ };
+  Vehicle(const Vehicle&) { /* Copy implementation */ };  // Or: Vehicle(const Vehicle&) = delete;
+  Vehicle(Vehicle&&) { /* Move implementation */ };
+  Vehicle& operator=(const Vehicle&) { /* Copy assignment implementation */ };
+  Vehicle& operator=(Vehicle&&) { /* Move assignment implementation */ };
+
+private:
+  // Some resource
+};
+```
+* A class without resource responsibility should not define those member functions (rule of zero)
+
+## 4.9 Inheritance
+* Always explicitly specify the inheritance type
+* Always mark classes not intended to be derived from as `final`
+* Always mark functions overwriting virtual functions with `overrwrite`
+```C++
+class Shape
+{
+public:
+  virtual void render() = 0;
+};
+ 
+class Cube final : public Shape
+{
+public:
+  void render() override;
+};
+```
+* Polymorphic base class pointers are not allowed to take ownership of derived objects
+
+## 4.11 Functions
 * Functions should serve a single purpose and should be kept below 30 lines
 * Tasks should be divided into reasonable smaller functions, e.g. a `render` function should call `render_vehicles`, `render_pedestrians`, etc. and not directly contain all the draw calls
 * Inputs should be passed by constant references or pointers, or by value for primitive types [<sub><sup>*(F.16)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f16-for-in-parameters-pass-cheaply-copied-types-by-value-and-others-by-reference-to-const)
@@ -372,7 +416,15 @@ tuple<bool, vector<string>> split(string_view sv, char sep);  // Yes
 bool split(vector<string>& out, string_view in, char sep);  // No
 ```
 
-## 4.8 Error handling
+## 4.12 Resource management
+* A resources should be tied to an object lifetime, i.e. resource acquisition is initialization [(RAII)](http://en.cppreference.com/w/cpp/language/raii)
+* Follow the the Core guidelines on [resource management](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#r-resource-management)
+* In short:
+  * Raw pointers should never have ownership responsibility
+  * Prefer `unqiue_ptr` over `shared_ptr`
+  * Wrap owning raw pointers from a C-style API in a `unique_ptr` with a custom deleter
+
+## 4.13 Error handling
 * Exceptions should be used [<sub><sup>*(C++ FAQ)*</sup></sub>](https://isocpp.org/wiki/faq/exceptions)
 * Exceptions should be derived from `std::runtime_error` or `std::logic_error`
 ```C++
