@@ -176,6 +176,12 @@ if( i < 10 )
   ...
 }
 ```
+* Don't write Yoda contitions
+```
+if (5 == i) {  // No
+  ...
+}
+```
 * Switch cases and contents within cases should be indented
 * Use braces when creating local variables not needed in subsequent cases
 * Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute
