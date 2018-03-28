@@ -397,7 +397,7 @@ private:
 ## 4.10 Inheritance
 * Always explicitly specify the inheritance type
 * Always mark classes not intended to be derived from as `final`
-* Always mark functions overwriting virtual functions with `overrwrite`
+* Always mark functions overwriting virtual functions with `overwrite`
 ```C++
 class Shape
 {
