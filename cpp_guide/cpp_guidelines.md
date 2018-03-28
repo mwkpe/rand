@@ -330,7 +330,23 @@ const float TAU = 6.28318f;  // Yes
 ```
 * Macros should be written using only capital letters, numbers and underscores
 
-## 4.4 Namespaces
+## 4.4 Comments
+* Comments must be written in English
+* Comments should describe why, not what you are doing
+* Keep comments succinct and sparse; prefer writing clear and expressive code
+```C++
+// Loop trough all shapes <- No
+for (auto&& s : shapes) {  // No
+  ...
+}
+
+// Last object excluded because it stinks <- Yes
+for (std::size_t i=0; i<shapes.size()-1; ++i) {
+  ...
+}
+```
+
+## 4.5 Namespaces
 * Never import a namespace in a header file or at global scope
 * Always explicitly qualifiy the std namespace, e.g. `std::vector` (This applies to all types and functions included from C++ headers, e.g. `std::memcpy`, `std::abs` or `std::uint64_t`)
 * Prefer declaring namespaces aliases in source files
@@ -341,7 +357,7 @@ namespace fsys = std::experimental::filesystem;  // Allowed in source files
 ```
 * Put related classes into a common namespace
 
-## 4.5 Const correctness
+## 4.6 Const correctness
 * Pointers and references should be const whenever possible
 * Always mark a member function `const` when it doesn't modify any member variables
 ```C++
@@ -355,38 +371,41 @@ private:
 };
 ```
 
-## 4.6 Fixed-width integers
+## 4.7 Fixed-width integers
 * Use the integer types defined in `<cstdint>` when a fixed-width integer is necessary
 ```C++
 std::uint8_t crc;  // Yes
 unsigned char crc;  // No
 ```
 
-## 4.7 Structs
-* Only use structs for aggregates and POD types, i.e. don't do anything fancy with structs
+## 4.8 Structs
+* Only use structs for [aggregates and POD types](https://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special), in short, don't do anything fancy with structs
+  * No user-defined constructor
+  * No virtual functions
 
-## 4.8 Classes
+## 4.9 Classes
 * A class should follow the single responsibility principle
 * All resources acquired by a class must be released by the class's destructor [<sub><sup>*(C.31)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
-* A class with either a user-defined destructor, copy/move constructors or assignment operators must always define all five (rule of five)
+  * Prefer wrapping resources in their own [RAII](#412-resource-management) member variable, e.g. `std::unique_ptr`, rather than defining a destructor in the owning class
+* A class with either a user-defined destructor, copy/move constructors or assignment operators must always define all five ([rule of five](http://en.cppreference.com/w/cpp/language/rule_of_three))
 
 ```C++
 class Vehicle
 {
 public:
   ~Vehicle() { /* Resource cleanup */ };
-  Vehicle(const Vehicle&) { /* Copy implementation */ };  // Or: Vehicle(const Vehicle&) = delete;
+  Vehicle(const Vehicle&) { /* Copy implementation */ };
   Vehicle(Vehicle&&) { /* Move implementation */ };
-  Vehicle& operator=(const Vehicle&) { /* Copy assignment implementation */ };
-  Vehicle& operator=(Vehicle&&) { /* Move assignment implementation */ };
+  Vehicle& operator=(const Vehicle&) = delete;  // Explicitly deleting counts as definition here
+  Vehicle& operator=(Vehicle&&) = default;  // Same for requesting the default implementation
 
 private:
-  // Some resource
+  // Some resource, e.g. buffer, socket, file handle, etc.
 };
 ```
-* A class without resource responsibility should not define those member functions (rule of zero)
+* A class without resource responsibility should not define those member functions ([rule of zero](http://en.cppreference.com/w/cpp/language/rule_of_three))
 
-## 4.9 Inheritance
+## 4.10 Inheritance
 * Always explicitly specify the inheritance type
 * Always mark classes not intended to be derived from as `final`
 * Always mark functions overwriting virtual functions with `overrwrite`
@@ -409,12 +428,7 @@ public:
 * Functions should serve a single purpose and should be kept below 30 lines
 * Tasks should be divided into reasonable smaller functions, e.g. a `render` function should call `render_vehicles`, `render_pedestrians`, etc. and not directly contain all the draw calls
 * Inputs should be passed by constant references or pointers, or by value for primitive types [<sub><sup>*(F.16)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f16-for-in-parameters-pass-cheaply-copied-types-by-value-and-others-by-reference-to-const)
-* Outputs should be returned (using tuple for multiple return values) [<sub><sup>*(F.20)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters)
-```C++
-// std:: omitted for some clarity
-tuple<bool, vector<string>> split(string_view sv, char sep);  // Yes
-bool split(vector<string>& out, string_view in, char sep);  // No
-```
+* Outputs should be returned (using tuple for multiple return values) [<sub><sup>*(F.20)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [<sub><sup>*(F.21)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-tuple-or-struct)
 
 ## 4.12 Resource management
 * A resources should be tied to an object lifetime, i.e. resource acquisition is initialization [(RAII)](http://en.cppreference.com/w/cpp/language/raii)
