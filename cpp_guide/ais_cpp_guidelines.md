@@ -2,7 +2,7 @@
 
 # 1. Preface
 ## 1.1 Applicability
-The following conventions are mostly intended for application development using a modern compiler. These rules, especially the programming conventions, may not be applicable for embedded development where other guidelines may apply, e.g. MISRA C++.
+The following conventions are mostly intended for application development using a modern compiler. Some, or all, of these rules may not be applicable for embedded development where other guidelines may apply, e.g. MISRA C++.
 
 ## 1.2 References
 These guidelines are loosely based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md), [C++ FAQ](https://isocpp.org/wiki/faq/), [Bjarne Stroustrup's C++ Style and Technique FAQ](http://www.stroustrup.com/bs_faq2.html) and the [PPP Style Guide](http://www.stroustrup.com/Programming/PPP-style.pdf) (PDF). These documents are recommended reading and should be considered for anything not specifically mentioned here.
