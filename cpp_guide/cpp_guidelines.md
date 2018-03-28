@@ -334,17 +334,6 @@ const float TAU = 6.28318f;  // Yes
 * Comments must be written in English
 * Comments should describe why, not what you are doing
 * Keep comments succinct and sparse; prefer writing clear and expressive code
-```C++
-// Loop trough all shapes <- No
-for (auto&& s : shapes) {  // No
-  ...
-}
-
-// Last object excluded because it stinks <- Yes
-for (std::size_t i=0; i<shapes.size()-1; ++i) {
-  ...
-}
-```
 
 ## 4.5 Namespaces
 * Never import a namespace in a header file or at global scope
@@ -386,7 +375,7 @@ unsigned char crc;  // No
 ## 4.9 Classes
 * A class should follow the single responsibility principle
 * All resources acquired by a class must be released by the class's destructor [<sub><sup>*(C.31)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
-  * Prefer wrapping resources in their own [RAII](#412-resource-management) member variable, e.g. `std::unique_ptr`, rather than defining a destructor in the owning class
+  * Prefer wrapping resources in their own [RAII](#412-resource-management) class, e.g. `std::unique_ptr`, rather than defining a destructor in the owning class
 * A class with either a user-defined destructor, copy/move constructors or assignment operators must always define all five ([rule of five](http://en.cppreference.com/w/cpp/language/rule_of_three))
 
 ```C++
