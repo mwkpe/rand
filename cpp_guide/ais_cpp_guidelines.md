@@ -433,7 +433,7 @@ public:
 
 ## 4.12 Resource management
 * A resources should be tied to an object lifetime, i.e. resource acquisition is initialization [(RAII)](http://en.cppreference.com/w/cpp/language/raii)
-* Follow the the Core guidelines on [resource management](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#r-resource-management)
+* Follow the the Core Guidelines on [resource management](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#r-resource-management)
 * In short:
   * Raw pointers should never have ownership responsibility
   * Prefer `unqiue_ptr` over `shared_ptr`
