@@ -1,6 +1,7 @@
 <h1>C++ Programming and Style Guidelines</h1>
 
-# 1. References
+# 1. Preface
+## 1.1 References
 These guidelines are loosely based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md), [C++ FAQ](https://isocpp.org/wiki/faq/), [Bjarne Stroustrup's C++ Style and Technique FAQ](http://www.stroustrup.com/bs_faq2.html) and the [PPP Style Guide](http://www.stroustrup.com/Programming/PPP-style.pdf) (PDF). These documents are recommended reading and should be considered for anything not specifically mentioned here.
 
 # 2. Naming conventions
