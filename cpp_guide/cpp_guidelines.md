@@ -472,6 +472,7 @@ private:
 ```
 
 * A class without resource responsibility should not define those member functions ([rule of zero](http://en.cppreference.com/w/cpp/language/rule_of_three))
+* Declare single-argument constructors `explicit` unless implicit conversion is intended [<sub><sup>*(C.46)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c46-by-default-declare-single-argument-constructors-explicit)
 
 ## 4.9 Inheritance
 
@@ -508,8 +509,8 @@ public:
 * Follow the the Core Guidelines on [resource management](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#r-resource-management)
 * In short:
   * Raw pointers should never have ownership responsibility
-  * Prefer `unqiue_ptr` over `shared_ptr`
-  * Wrap owning raw pointers from a C-style API in a `unique_ptr` with a custom deleter
+  * Prefer `std::unqiue_ptr` over `std::shared_ptr`
+  * Wrap owning raw pointers from a C-style API in a `std::unique_ptr` with a custom deleter
 
 ## 4.12 Error handling
 
