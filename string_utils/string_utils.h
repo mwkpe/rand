@@ -1,5 +1,5 @@
-#ifndef MPXE_H
-#define MPXE_H
+#ifndef MWKPE_STRING_UTILS_H
+#define MWKPE_STRING_UTILS_H
 
 
 #include <cstdint>
@@ -10,9 +10,7 @@
 #include <algorithm>
 
 
-// Implementation details
-//
-namespace mpxe::string::details
+namespace mwkpe::string_utils::detail
 {
 
 
@@ -66,12 +64,12 @@ std::vector<std::string_view> split_ignore_empty(std::string_view sv, char token
 }
 
 
-}  // namepsace mpxe::string::details
+}  // namepsace mwkpe::string_utils::detail
 
 
 // The following functions assume US ASCII (or single byte in some cases) encoding
 //
-namespace mpxe::string::ascii  
+namespace mwkpe::string_utils::ascii  
 {
 
 
@@ -107,25 +105,9 @@ std::string as_lower(std::string_view sv)
 }
 
 
-void trim(std::string& s)
-{
-  
-}
-
-
-std::string_view trimmed(std::string_view sv)
-{
-  return sv;
-}
-
-
 // Splits <sv> each <character_count> characters, skipping <skip> characters after each split
 // E.g.: split(sv, 3)    : "abcdef123"   -> "abc", "def" and "123"
 //       split(sv, 3, 1) : "abc,def,123" -> "abc", "def" and "123"
-//
-// Substantially faster (scales linear with <character_count>) for constant width splitting
-// than using split(sv, ',') for "abc,def,123"
-//
 std::vector<std::string_view> split(std::string_view sv, std::size_t character_count,
     std::size_t skip = 0)
 {
@@ -144,10 +126,10 @@ std::vector<std::string_view> split(std::string_view sv, std::size_t character_c
 }
 
 
-}  // namespace mpxe::string::ascii
+}  // namespace mwkpe::string_utils::ascii
 
 
-namespace mpxe::string
+namespace mwkpe::string_utils
 {
 
 
@@ -155,7 +137,7 @@ bool starts_with(std::string_view sv, std::string_view test)
 {
   if (sv.empty() || test.empty() || test.size() > sv.size())
     return false;
-  return details::compare(std::begin(sv), std::begin(test), std::end(test));
+  return detail::compare(std::begin(sv), std::begin(test), std::end(test));
 }
 
 
@@ -163,15 +145,15 @@ bool ends_with(std::string_view sv, std::string_view test)
 {
   if (sv.empty() || test.empty() || test.size() > sv.size())
     return false;
-  return details::compare(std::rbegin(sv), std::rbegin(test), std::rend(test));
+  return detail::compare(std::rbegin(sv), std::rbegin(test), std::rend(test));
 }
 
 
 std::vector<std::string_view> split(std::string_view sv, char token, bool keep_empty_parts = true)
 {
   if (keep_empty_parts)
-    return details::split_keep_empty(sv, token);
-  return details::split_ignore_empty(sv, token);
+    return detail::split_keep_empty(sv, token);
+  return detail::split_ignore_empty(sv, token);
 }
 
 
@@ -185,7 +167,7 @@ std::tuple<std::string_view, std::string_view> split_first(std::string_view sv, 
 }
 
 
-}  // namespace mpxe::string
+}  // namespace mwkpe::string_utils
 
 
-#endif  // MPXE_H
+#endif  // MWKPE_STRING_UTILS_H

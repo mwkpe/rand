@@ -1,10 +1,10 @@
 # string utils
-A collection of utility functions for strings
+A collection of utility functions for strings and string_views
 
 Test and benchmark
 ---
-g++ -std=c++1z -O2 -Wall -o test test.cpp<br>
-g++ -std=c++1z -O2 -Wall -o bench bench.cpp
+g++ -std=c++17 -O2 -Wall -o test test.cpp<br>
+g++ -std=c++17 -O2 -Wall -o bench bench.cpp
 
 Building the benchmark requires the hayai header files in a bench/hayai subdirectory.
 

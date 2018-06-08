@@ -4,7 +4,7 @@
 
 
 TEST_CASE("ascii case functions") {
-  using namespace mpxe::string;
+  using namespace mwkpe::string_utils;
 
   SUBCASE("to_upper") {
     auto s = std::string{"abc_XYZ,-$"};
@@ -39,7 +39,7 @@ TEST_CASE("ascii case functions") {
 
 
 TEST_CASE("ascii split") {
-  using namespace mpxe::string;
+  using namespace mwkpe::string_utils;
 
   SUBCASE("1") {
     auto v = ascii::split("abcdefghijklmnop", 3);
@@ -93,7 +93,7 @@ TEST_CASE("ascii split") {
 
 
 TEST_CASE("starts_with") {
-  using namespace mpxe::string;
+  using namespace mwkpe::string_utils;
 
   CHECK(starts_with("hello world", "hello") == true);
   CHECK(starts_with("hello world", "h") == true);
@@ -111,7 +111,7 @@ TEST_CASE("starts_with") {
 
 
 TEST_CASE("ends_with") {
-  using namespace mpxe::string;
+  using namespace mwkpe::string_utils;
 
   CHECK(ends_with("hello world", "world") == true);
   CHECK(ends_with("hello world", "d") == true);
@@ -129,7 +129,7 @@ TEST_CASE("ends_with") {
 
 
 TEST_CASE("split_keep_empty") {
-  using namespace mpxe::string;
+  using namespace mwkpe::string_utils::detail;
 
   SUBCASE("1") {
     auto v = split_keep_empty("a,b,c", ',');
@@ -203,7 +203,7 @@ TEST_CASE("split_keep_empty") {
 
 
 TEST_CASE("split_ignore_empty") {
-  using namespace mpxe::string;
+  using namespace mwkpe::string_utils::detail;
 
   SUBCASE("1") {
     auto v = split_ignore_empty("a,b,c", ',');
@@ -266,7 +266,7 @@ TEST_CASE("split_ignore_empty") {
 
 
 TEST_CASE("ascii split and split cross check") {
-  using namespace mpxe::string;
+  using namespace mwkpe::string_utils;
   const char* s = "123,456,789,3";
   auto v1 = split(s, ',');
   auto v2 = ascii::split(s, 3, 1);
