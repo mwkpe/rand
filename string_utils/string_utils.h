@@ -67,7 +67,7 @@ std::vector<std::string_view> split_ignore_empty(std::string_view sv, char token
 }  // namepsace nonstd::string_utils::detail
 
 
-// The following functions expect ASCII (or single byte in some cases) encoding
+// The following functions expect ASCII (or single byte) encoding
 //
 
 namespace nonstd::string_utils::ascii  
