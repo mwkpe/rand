@@ -68,7 +68,7 @@ const char* csv_constw = "116112,117178,129932,138393,151968,155886,163385,16717
 
 BENCHMARK(string, starts_with, 100, 1000000)
 {
-  using namespace mwkpe::string_utils;
+  using namespace nonstd::string_utils;
   bool b;
   escape(&b);
   b = starts_with("If you have nothing in quantum mechanics, you will always have something.",
@@ -80,13 +80,13 @@ BENCHMARK(string, starts_with, 100, 1000000)
 /*
 BENCHMARK(string, split, 100, 100000)
 {
-  mwkpe::string_utils::split(csv_constw, ',');
+  nonstd::string_utils::split(csv_constw, ',');
 }
 
 
 BENCHMARK(string, split_for_each, 100, 100000)
 {
-  mwkpe::string_utils::ascii::split_for_each(csv_constw, 6, 1);
+  nonstd::string_utils::ascii::split_for_each(csv_constw, 6, 1);
 }
 */
 
@@ -94,13 +94,13 @@ BENCHMARK(string, split_for_each, 100, 100000)
 /*
 BENCHMARK_F(RandomFixture, split_at_char, 100, 100000)
 {
-  mwkpe::string_utils::split(s, ',');
+  nonstd::string_utils::split(s, ',');
 }
 
 
 BENCHMARK_F(RandomFixture, split_at_count, 100, 100000)
 {
-  mwkpe::string_utils::ascii::split(s, 100, 1);
+  nonstd::string_utils::ascii::split(s, 100, 1);
 }
 */
 

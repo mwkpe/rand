@@ -1,5 +1,5 @@
-#ifndef MWKPE_STRING_UTILS_H
-#define MWKPE_STRING_UTILS_H
+#ifndef NONSTD_STRING_UTILS_H
+#define NONSTD_STRING_UTILS_H
 
 
 #include <cstdint>
@@ -10,7 +10,7 @@
 #include <algorithm>
 
 
-namespace mwkpe::string_utils::detail
+namespace nonstd::string_utils::detail
 {
 
 
@@ -64,12 +64,13 @@ std::vector<std::string_view> split_ignore_empty(std::string_view sv, char token
 }
 
 
-}  // namepsace mwkpe::string_utils::detail
+}  // namepsace nonstd::string_utils::detail
 
 
-// The following functions assume US ASCII (or single byte in some cases) encoding
+// The following functions expect ASCII (or single byte in some cases) encoding
 //
-namespace mwkpe::string_utils::ascii  
+
+namespace nonstd::string_utils::ascii  
 {
 
 
@@ -126,12 +127,15 @@ std::vector<std::string_view> split(std::string_view sv, std::size_t character_c
 }
 
 
-}  // namespace mwkpe::string_utils::ascii
+}  // namespace nonstd::string_utils::ascii
 
 
-namespace mwkpe::string_utils
+namespace nonstd::string_utils
 {
 
+
+// The following functions are obviously not UTF-8 aware and simply do byte comparsions
+//
 
 bool starts_with(std::string_view sv, std::string_view test)
 {
@@ -167,7 +171,7 @@ std::tuple<std::string_view, std::string_view> split_first(std::string_view sv, 
 }
 
 
-}  // namespace mwkpe::string_utils
+}  // namespace nonstd::string_utils
 
 
-#endif  // MWKPE_STRING_UTILS_H
+#endif  // NONSTD_STRING_UTILS_H
