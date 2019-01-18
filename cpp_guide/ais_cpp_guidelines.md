@@ -495,7 +495,7 @@ public:
 };
 ```
 
-* Avoid resource ownership by polymorphic base class pointers, when necessary make sure the base class's destructor is marked virtual
+* Avoid ownership by polymorphic base class pointers, when necessary make sure the base class's destructor is declared virtual
 
 ## 4.10 Functions
 
