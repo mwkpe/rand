@@ -1,6 +1,6 @@
 <h1>AIS C++ Programming and Style Guidelines</h1>
 
-# 1. Preface
+# 1 Preface
 
 ## 1.1 Applicability
 
@@ -10,7 +10,7 @@ The following conventions are mostly intended for application development using 
 
 These guidelines are loosely based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md), [C++ FAQ](https://isocpp.org/wiki/faq/), [Bjarne Stroustrup's C++ Style and Technique FAQ](http://www.stroustrup.com/bs_faq2.html) and the [PPP Style Guide](http://www.stroustrup.com/Programming/PPP-style.pdf) (PDF). These documents are recommended reading and should be considered for anything not specifically mentioned here.
 
-# 2. Naming conventions
+# 2 Naming conventions
 
 ## 2.1 General
 
@@ -18,11 +18,6 @@ These guidelines are loosely based on the [C++ Core Guidelines](https://github.c
 * Don't add type information to names, e.g. Hungarian notation `f_velocity` [<sub><sup>*(NL.5)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#nl5-avoid-encoding-type-information-in-names)
 * Don't use a leading underscore `_abc` or double underscores `ab__c`. These are generally reserved for library implementers or compiler vendors. <sub><sup>*(N4659 5.10.3)*</sup></sub>
 * Avoid using unnecessarily or excessively long names
-
-```C++
-int remaining_free_slots_in_symbol_table;  // Please no
-int free_table_slots;  // Better
-```
 
 ## 2.2 Variables
 
@@ -90,8 +85,8 @@ class FusionObject;
 
 ## 2.5 Constants
 
-* Don't capitalize all constants, e.g. `MAX_ITERATIONS`, exceptions are preprocessor defines, global constants and plain enumerations
-* Prefer using `enum class` since these don't leak names to the surrounding scope
+* Don't capitalize all constants, e.g. `MAX_ITERATIONS` (exceptions are global constants, plain enumerations and reprocessor defines)
+* Prefer using `enum class` since these don't leak names into the surrounding scope
 
 ```C++
 enum COLOR { RED, GREEN, BLUE };  // OK
@@ -125,12 +120,12 @@ class Fusion_object
 };
 ```
 
-# 3. Style conventions
+# 3 Style conventions
 
 ## 3.1 Indentation
 
-* Tabs should be automatically replaced with spaces.
-* One tab should be two spaces wide.
+* Tabs should be automatically replaced with spaces
+* One tab should be two spaces wide
 
 ```C++
 // Yes
@@ -148,8 +143,8 @@ if (x < 0)
 
 ## 3.2 Line length
 
-* Lines should be around 100 characters long and not exceed 120 characters
-* Long lines should be continued on a new line with 4 spaces indentation with respect to the first line, i.e. any additional lines should not be indented further
+* Lines should not exceed 120 characters
+* Long lines should be broken up and continued on a new line with 4 spaces indentation with respect to the first line, i.e. any additional lines should not be indented further
 
 ```C++
 // Yes
@@ -168,7 +163,8 @@ auto time = to_timestamp(int hours, int minutes, int seconds, int milliseconds,
 
 ## 3.3 Functions
 
-* The opening brace should be put on a new line (Allman style)
+* Don't put a space before or after the parentheses
+* The opening brace should be put on a new line
 * Parameters should be separated by a single space after the comma
 
 ```C++
@@ -180,8 +176,8 @@ void run(int mode, float delta_time)
 
 ## 3.4 Types
 
-* The opening brace should be put on a new line (Allman style)
-* Access specifiers should not be indented (Stroustrup style)
+* The opening brace should be put on a new line
+* Access specifiers should not be indented
 
 ```C++
 class Vehicle
@@ -196,9 +192,9 @@ private:
 
 ## 3.5 Conditionals
 
-* The opening brace should be put on a new line (Allman style)
-* Put a space after the keyword and before the opening brace
-* Don't put spaces after the opening bracket or before the closing bracket
+* The opening brace should be put on a new line
+* Put a space between the keyword and the opening parenthesis
+* Don't put spaces after the opening parenthesis or before the closing parenthesis
 
 ```C++
 // Yes
@@ -226,26 +222,23 @@ if (5 == i)  // No
 }
 ```
 
-* Switch cases and contents within cases should be indented
-* Use braces when creating local variables not needed in subsequent cases
+* Ccontents within cases should be indented
+* Prefer using braces for complex cases
 * Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute
 
 ```C++
-// Yes
 switch (condition)
 {
   case 0:
-      parse_signal(std::string_view s);
+    parse_signal(s);
     break;
-  case 1: {
-    int a = 10;
-  } break;
-  case 2:
-    // Fallthrough or...
-    [[fallthrough]];  // Starting with C++17
-  case 3:
+  case 1:
     ...
-    break;
+    // Fallthrough or...
+    [[fallthrough]];  // C++17
+  case 2: {
+    ...
+  } break;
   default:
     break;
 }
@@ -253,7 +246,7 @@ switch (condition)
 
 ## 3.6 Exception handling
 
-* The opening brace should be put on a new line (Allman style)
+* The opening brace should be put on a new line
 
 ```C++
 try
@@ -311,9 +304,6 @@ private:
 ```C++
 // Defer update of tree items to reduce CPU load
 ...
-
-// Calculate required decimal places for correct reproduction
-...
 ```
 
 * Comments following code should be separated by 2 spaces
@@ -354,7 +344,7 @@ auto time = to_timestamp(hours, minutes, seconds, milliseconds,
     to_microseconds(microseconds, nanoseconds, picoseconds));
 ```
 
-* Exception: vector and matrix initialization
+* Exception: Do properly align vector and matrix initialization
 
 ```C++
 Matrix3f m;
@@ -363,7 +353,7 @@ m << 1,  2,  3,
      9, 10, 11;
 ```
 
-# 4. Programming conventions
+# 4 Programming conventions
 
 ## 4.1 Header includes
 
@@ -505,15 +495,14 @@ public:
 };
 ```
 
-* Polymorphic base class pointers are not allowed to take ownership of derived objects
+* Avoid resource ownership by polymorphic base class pointers, when necessary make sure the base class's destructor is marked virtual
 
 ## 4.10 Functions
 
 * Functions should serve a single purpose
 * A single function should not exceed 100 lines; aim to write concise functions below 30 lines
-* Tasks should be divided into reasonable smaller functions, e.g. a `render` function should call `render_vehicles`, `render_pedestrians`, etc. and not directly contain all the draw calls
 * Inputs should be passed by constant references or pointers, or by value for primitive types [<sub><sup>*(F.16)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f16-for-in-parameters-pass-cheaply-copied-types-by-value-and-others-by-reference-to-const)
-* Outputs should be returned (using tuple for multiple return values) [<sub><sup>*(F.20)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [<sub><sup>*(F.21)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-tuple-or-struct)
+* Outputs should be returned [<sub><sup>*(F.20)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [<sub><sup>*(F.21)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-tuple-or-struct)
 
 ## 4.11 Resource management
 
