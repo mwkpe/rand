@@ -451,19 +451,19 @@ unsigned char crc;  // No
 class Vehicle
 {
 public:
-  ~Vehicle() { /* Resource cleanup */ };
-  Vehicle(const Vehicle&) { /* Copy implementation */ };
-  Vehicle(Vehicle&&) { /* Move implementation */ };
+  ~Vehicle() { /* Resource cleanup */ }
+  Vehicle(const Vehicle&) { /* Copy implementation */ }
+  Vehicle(Vehicle&&) noexcept { /* Move implementation */ }
   Vehicle& operator=(const Vehicle&) = delete;  // Explicitly deleting counts as definition here
-  Vehicle& operator=(Vehicle&&) = default;  // Same for requesting the default implementation
+  Vehicle& operator=(Vehicle&&) noexcept = default;  // Same for requesting the default implementation
 
 private:
   // Some resource, e.g. buffer, socket, file handle, etc.
 };
 ```
-
-* A class without resource responsibility should not define those member functions ([rule of zero](http://en.cppreference.com/w/cpp/language/rule_of_three))
+* Declare move constructors `noexcept` to allow standard containers to internally move objects
 * Declare single-argument constructors `explicit` unless implicit conversion is intended [<sub><sup>*(C.46)*</sup></sub>](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c46-by-default-declare-single-argument-constructors-explicit)
+* A class without resource responsibility should not define those member functions ([rule of zero](http://en.cppreference.com/w/cpp/language/rule_of_three))
 
 ## 4.9 Inheritance
 
