@@ -214,7 +214,7 @@ if (5 == i) {  // No
 }
 ```
 
-* Ccontents within cases should be indented
+* Code within cases should be indented
 * Prefer using braces for complex cases
 * Denote intentional fallthrough with a comment or the C++17 `[[fallthrough]]` attribute
 
