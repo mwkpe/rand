@@ -44,7 +44,7 @@ struct Anagram_key
 {
   explicit Anagram_key(std::string_view word)
   {
-    static const std::size_t ascii_offset = 65;
+    static const char ascii_offset = 65;
 
     key.bits.len = word.size();
 
