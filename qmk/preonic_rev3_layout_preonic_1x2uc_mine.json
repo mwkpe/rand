@@ -62,10 +62,10 @@
       "MO(1)",
       "KC_SPC",
       "MO(2)",
-      "KC_LEFT",
-      "KC_RGHT",
+      "KC_UP",
       "KC_DOWN",
-      "KC_UP"
+      "KC_LEFT",
+      "KC_RGHT"
     ],
     [
       "KC_CIRC",
