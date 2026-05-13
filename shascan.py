@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 
 
-def check_sha256(root: Path) -> None:
+def check_sha256(root: Path, verbose: bool) -> None:
   for dirpath, _, filenames in os.walk(root):
     dirpath = Path(dirpath)
 
@@ -44,12 +44,44 @@ def check_sha256(root: Path) -> None:
             if actual_hash != expected_hash:
               error = True
               print(f"Failed: {full_path}")
+            elif verbose:
+              print(f"Okay: {full_path}")
 
         if not error:
           print("All files okay")
 
       except Exception as e:
         print(f"Error while checking {sha_file}: {e}")
+
+
+def generate_sha256(root: Path) -> None:
+  for dirpath, _, filenames in os.walk(root):
+    dirpath = Path(dirpath)
+    lines: list[str] = []
+
+    for filename in sorted(filenames):
+      if filename.endswith(".sha256") or filename.endswith(".exf"):
+        continue
+
+      full_path = dirpath / filename
+
+      if not full_path.is_file():
+        continue
+
+      with open(full_path, "rb") as file:
+        hash_val = hashlib.sha256(file.read()).hexdigest()
+
+      lines.append(f"{hash_val}  ./{filename}")
+
+    if not lines:
+      continue
+
+    sha_path = dirpath / f"{dirpath.name}.sha256"
+
+    with open(sha_path, "w", encoding="utf-8") as f:
+      f.write("\n".join(lines) + "\n")
+
+    print(f"Created: {sha_path}")
 
 
 def convert_exf(root: Path) -> None:
@@ -88,11 +120,18 @@ def convert_exf(root: Path) -> None:
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument("-c", dest="check", type=Path, help="Root path to check")
-  parser.add_argument("-e", dest="convert", type=Path, help="Root path to convert .exf")
+  group = parser.add_mutually_exclusive_group(required=True)
+  group.add_argument("-c", dest="check", type=Path, help="Root path to check .sha256")
+  group.add_argument("-g", dest="generate", type=Path, help="Root path to generate .sha256")
+  group.add_argument("-e", dest="convert", type=Path, help="Root path to convert .exf")
+  parser.add_argument("-v", dest="verbose", action="store_true", help="Show all files")
   args = parser.parse_args()
 
   if args.check:
-    check_sha256(args.check)
-  elif args.convert:
+    check_sha256(args.check, args.verbose)
+
+  if args.generate:
+    generate_sha256(args.generate)
+
+  if args.convert:
     convert_exf(args.convert)
