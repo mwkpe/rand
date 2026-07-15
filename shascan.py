@@ -9,11 +9,14 @@ def check_sha256(root: Path, verbose: bool) -> None:
   for dirpath, _, filenames in os.walk(root):
     dirpath = Path(dirpath)
 
+    sha_file_found = False
+
     for filename in filenames:
       if not filename.endswith(".sha256"):
         continue
 
       sha_file = dirpath / filename
+      sha_file_found = True
       print(f"Checking: {sha_file}")
 
       try:
@@ -52,6 +55,9 @@ def check_sha256(root: Path, verbose: bool) -> None:
 
       except Exception as e:
         print(f"Error while checking {sha_file}: {e}")
+
+    if not sha_file_found:
+      print("No checksum file in directory")
 
 
 def generate_sha256(root: Path) -> None:
